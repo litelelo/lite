@@ -1,0 +1,43 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Student {
+    int rollNo;
+    string name;
+    string division;
+    string year;
+};
+
+int main() {
+    int n;
+    cout << "Enter number of students: ";
+    cin >> n;
+
+    Student students[100];
+    for (int i = 0; i < n; i++) {
+        cout << "Enter details for student " << i + 1 << " (RollNo Name Division Year): ";
+        cin >> students[i].rollNo >> students[i].name >> students[i].division >> students[i].year;
+    }
+
+    int searchRoll = 17;
+    string searchName = "XYZ";
+    string searchDiv = "X";
+    string searchYear = "SY";
+
+    bool found = false;
+    for (int i = 0; i < n; i++) {
+        if (students[i].rollNo == searchRoll && students[i].name == searchName && 
+            students[i].division == searchDiv && students[i].year == searchYear) {
+            cout << "Student found at index " << i << endl;
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        cout << "Student not found." << endl;
+    }
+
+    return 0;
+}

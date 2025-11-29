@@ -1,0 +1,89 @@
+Problem Statement	Problem Statement
+1	Implement basic string operations such as length calculation, copy, reverse, and concatenation using character single dimensional arrays without using built-in string library functions.
+2	Write a program to construct and verify a magic square of order 'n' (for both even & odd) such that all rows, columns, and diagonals sum to the same value.
+3	Develop a program to identify and efficiently store a sparse matrix using compact representation and perform basic operations like display and simple transpose.
+4	Develop a program to compute the fast transpose of a sparse matrix using its compact (triplet) representation efficiently.
+5	In Computer Engg. Dept. of VIT there are S.Y., T.Y., and B.Tech. students. Assume that all these students are on ground for a function. We need to identify a student of S.Y. div. (X) whose name is "XYZ" and roll no. is "17". Apply appropriate Searching method to identify the required student.
+6	Write a program to input marks of n students Sort the marks in ascending order using the Quick Sort algorithm without using built-in library functions and analyse the sorting algorithm pass by pass. Find the minimum and maximum marks using Divide and Conquer (recursively).
+7	Write a program using Bubble and Selection sort algorithm, assign the roll nos. to the students of your class as per their previous years result. i.e. topper will be roll no. 1 and analyse the sorting algorithm pass by pass.
+8	Write a program to arrange the list of employees as per the average of their height and weight by using Merge sorting method. Analyse their time complexities and conclude which algorithm will take less time to sort the list. 
+9	Implementation of Singly Linked List to Manage ‘Vertex Club’ Membership Records.
+The Department of Computer Engineering has a student club named ‘Vertex Club’ for second, third, and final year students. The first member is the President and the last member is the Secretary. Write a C++ program to:
+●	Add/delete members (including President/Secretary)
+●	Count members
+●	Display members
+●	Concatenate two division lists
+10	The ticket reservation system for Galaxy Multiplex is to be implemented using a C++ program. The multiplex has 8 rows, with 8 seats in each row. A doubly circular linked list will be used to track the availability of seats in each row. Initially, assume that some seats are randomly booked. An array will store head pointers for each row’s linked list. The system should support the following operations:
+a) Display the current list of available seats.
+b) Book one or more seats as per customer request.
+c) Cancel an existing booking when requested.
+11	Develop a C++ program to store and manage an appointment schedule for a single day. Appointments should be scheduled randomly using a linked list. The system must define the start time, end time, and specify the minimum and maximum duration allowed for each appointment slot.
+The program should include the following operations:
+a) Display the list of currently available time slots.
+ b) Book a new appointment within the defined time limits.
+ c) Cancel an existing appointment after validating its time, availability, and correctness.
+ d) Sort the appointment list in order of appointment times.
+
+12	In the Second Year Computer Engineering class, there are two groups of students based on their favorite sports:
+●	Set A includes students who like Cricket.
+●	Set B includes students who like Football.
+Write a C++ program to represent these two sets using linked lists and perform the following operations:
+a) Find and display the set of students who like both Cricket and Football.
+ b) Find and display the set of students who like either Cricket or Football, but not both.
+ c) Display the number of students who like neither Cricket nor Football.
+
+13	Write a C++ program to store a binary number using a doubly linked list. Implement the following functions:
+a) Calculate and display the 1’s complement and 2’s complement of the stored binary number. 
+14	WAP to perform addition of two polynomials using singly linked list.
+
+15	Implement Bubble sort using Doubly Linked List
+
+16	WAP to create a doubly linked list and perform following operations on it. A) Insert (all cases) 2. Delete (all cases).
+17	WAP to build a simple stock price tracker that keeps a history of daily stock prices entered by the user. To allow users to go back and view or remove the most recent price, implement a stack using a linked list to store these integer prices.
+Implement the following operations:
+1.	record(price) – Add a new stock price (an integer) to the stack.
+2.	remove () – Remove and return the most recent price (top of the stack).
+3.	latest () – Return the most recent stock price without removing it.
+4.	isEmpty() – Check if there are no prices recorded.
+18	Convert given infix expression Eg. a-b*c-d/e+f into postfix form using stack and show the operations step by step.
+
+19	Write a program to implement multiple stack i.e more than two stack using array and perform following operations on it. A. Push B. Pop C. Stack Overflow D. Stack Underflow E. Display
+20	You are given a string containing only parentheses characters: '(', ')', '{', '}', '[', and ']'. Your task is to check whether the parentheses are balanced or not.
+A string is considered balanced if:
+1.	Every opening bracket has a corresponding closing bracket of the same type
+2.	Brackets are closed in the correct order.
+21	You are given a postfix expression (also known as Reverse Polish Notation) consisting of single-digit operands and binary operators (+, -, *, /). Your task is to evaluate the expression using stack and return its result.
+
+22	Write a program to keep track of patients as they checked into a medical clinic, assigning patients to doctors on a first-come, first-served basis.
+23	Pizza parlour accepting maximum n orders. Orders are served on an FCFS basis. Order once placed can’t be cancelled. Write C++ program to simulate the system using circular QUEUE.
+24	Write a program that maintains a queue of passengers waiting to see a ticket agent. The program user should be able to insert a new passenger at the rear of the queue, Display the passenger at the front of the Queue, or remove the passenger at the front of the queue. The program will display the number of passengers left in the queue just before it terminates.
+25	Write a program to implement multiple queues i.e. two queues using array and perform following operations on it. A. Add Queue, B. Delete from Queue, C. Display Queue
+
+26	In a call centre, customer calls are handled on a first-come, first-served basis. Implement a queue system using Linked list where:
+●	Each customer call is enqueued as it arrives.
+●	Customer service agents dequeue calls to assist customers.
+●	If there are no calls, the system waits.
+27	Write a program to perform Binary Search Tree (BST) operations (Create, Insert, Delete, Levelwise and display)
+
+28	Write a program to perform Binary Search Tree (BST) operations (Count the total number of nodes, Compute the height of the BST).
+
+29	Write a Program to create a Binary Tree Search and Find Minimum/Maximum in BST 
+
+30	Write a Program to create a Binary Tree and perform following Nonrecursive operations on it. a. Inorder Traversal 
+
+31	Write a Program to create a Binary Tree and perform the following Recursive operations on it. a. Inorder Traversal b. Preorder Traversal c. Display Number of Leaf Nodes 
+
+32	Write a Program to accept a graph from a user and represent it with Adjacency Matrix and perform BFS and DFS traversals on it.
+
+33	Write a Program to implement Prim’s algorithm to find minimum spanning tree of a user defined graph. 
+
+34	Write a Program to implement Kruskal’s algorithm to find the minimum spanning tree of a user defined graph. 
+
+35	Write a Program to implement Dijkstra’s algorithm to find shortest distance between two nodes of a user defined graph. 
+
+36	Write a Program to accept a graph from a user and represent it with Adjacency List and perform BFS traversal on it.
+
+37	Implement a hash table with collision resolution using linear probing.
+
+38	Use hash table to Store and retrieve student records using roll numbers.
+
