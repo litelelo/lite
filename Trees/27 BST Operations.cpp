@@ -9,11 +9,36 @@ struct QNode {
 class Queue {
     QNode *front, *rear;
 public:
-    Queue() { front = rear = NULL; }
-    void push(Node* val) { QNode* t = new QNode{val, NULL}; if(rear) rear->next = t; else front = t; rear = t; }
-    void pop() { if(front) { QNode* t = front; front = front->next; if(!front) rear = NULL; delete t; } }
-    Node* getFront() { return front ? front->data : NULL; }
-    bool empty() { return front == NULL; }
+    Queue() { 
+        front = rear = NULL; 
+    }
+    
+    void push(Node* val) { 
+        QNode* t = new QNode{val, NULL}; 
+        if(rear) 
+            rear->next = t; 
+        else 
+            front = t; 
+        rear = t; 
+    }
+    
+    void pop() { 
+        if(front) { 
+            QNode* t = front; 
+            front = front->next; 
+            if(!front) 
+                rear = NULL; 
+            delete t; 
+        } 
+    }
+    
+    Node* getFront() { 
+        return front ? front->data : NULL; 
+    }
+    
+    bool empty() { 
+        return front == NULL; 
+    }
 };
 
 struct Node {

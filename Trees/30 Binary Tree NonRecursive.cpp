@@ -9,11 +9,30 @@ struct StackNode {
 class Stack {
     StackNode* top;
 public:
-    Stack() { top = NULL; }
-    void push(Node* val) { StackNode* t = new StackNode{val, top}; top = t; }
-    void pop() { if(top) { StackNode* t = top; top = top->next; delete t; } }
-    Node* getTop() { return top ? top->data : NULL; }
-    bool empty() { return top == NULL; }
+    Stack() { 
+        top = NULL; 
+    }
+    
+    void push(Node* val) { 
+        StackNode* t = new StackNode{val, top}; 
+        top = t; 
+    }
+    
+    void pop() { 
+        if(top) { 
+            StackNode* t = top; 
+            top = top->next; 
+            delete t; 
+        } 
+    }
+    
+    Node* getTop() { 
+        return top ? top->data : NULL; 
+    }
+    
+    bool empty() { 
+        return top == NULL; 
+    }
 };
 
 struct Node {
@@ -27,11 +46,13 @@ public:
     BinaryTree() { root = NULL; }
 
     void insert(int val) {
-        // Simple insert for demo
-        if (!root) { root = new Node{val, NULL, NULL}; return; }
-        // Just inserting to left for simplicity or use queue for level order insert
+        if (!root) { 
+            root = new Node{val, NULL, NULL}; 
+            return; 
+        }
         Node* temp = root;
-        while (temp->left) temp = temp->left;
+        while (temp->left) 
+            temp = temp->left;
         temp->left = new Node{val, NULL, NULL};
     }
 

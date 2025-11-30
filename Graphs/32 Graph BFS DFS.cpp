@@ -9,11 +9,36 @@ struct QNode {
 class Queue {
     QNode *front, *rear;
 public:
-    Queue() { front = rear = NULL; }
-    void push(int val) { QNode* t = new QNode{val, NULL}; if(rear) rear->next = t; else front = t; rear = t; }
-    void pop() { if(front) { QNode* t = front; front = front->next; if(!front) rear = NULL; delete t; } }
-    int getFront() { return front ? front->data : -1; }
-    bool empty() { return front == NULL; }
+    Queue() { 
+        front = rear = NULL; 
+    }
+    
+    void push(int val) { 
+        QNode* t = new QNode{val, NULL}; 
+        if(rear) 
+            rear->next = t; 
+        else 
+            front = t; 
+        rear = t; 
+    }
+    
+    void pop() { 
+        if(front) { 
+            QNode* t = front; 
+            front = front->next; 
+            if(!front) 
+                rear = NULL; 
+            delete t; 
+        } 
+    }
+    
+    int getFront() { 
+        return front ? front->data : -1; 
+    }
+    
+    bool empty() { 
+        return front == NULL; 
+    }
 };
 
 struct StackNode {
@@ -24,11 +49,30 @@ struct StackNode {
 class Stack {
     StackNode* top;
 public:
-    Stack() { top = NULL; }
-    void push(int val) { StackNode* t = new StackNode{val, top}; top = t; }
-    void pop() { if(top) { StackNode* t = top; top = top->next; delete t; } }
-    int getTop() { return top ? top->data : -1; }
-    bool empty() { return top == NULL; }
+    Stack() { 
+        top = NULL; 
+    }
+    
+    void push(int val) { 
+        StackNode* t = new StackNode{val, top}; 
+        top = t; 
+    }
+    
+    void pop() { 
+        if(top) { 
+            StackNode* t = top; 
+            top = top->next; 
+            delete t; 
+        } 
+    }
+    
+    int getTop() { 
+        return top ? top->data : -1; 
+    }
+    
+    bool empty() { 
+        return top == NULL; 
+    }
 };
 
 class Graph {

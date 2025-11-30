@@ -10,11 +10,30 @@ struct StackNode {
 class Stack {
     StackNode* top;
 public:
-    Stack() { top = NULL; }
-    void push(int val) { StackNode* t = new StackNode{val, top}; top = t; }
-    void pop() { if(top) { StackNode* t = top; top = top->next; delete t; } }
-    int getTop() { return top ? top->data : 0; }
-    bool empty() { return top == NULL; }
+    Stack() { 
+        top = NULL; 
+    }
+    
+    void push(int val) { 
+        StackNode* t = new StackNode{val, top}; 
+        top = t; 
+    }
+    
+    void pop() { 
+        if(top) { 
+            StackNode* t = top; 
+            top = top->next; 
+            delete t; 
+        } 
+    }
+    
+    int getTop() { 
+        return top ? top->data : 0; 
+    }
+    
+    bool empty() { 
+        return top == NULL; 
+    }
 };
 
 int evaluatePostfix(string exp) {

@@ -10,11 +10,30 @@ struct StackNode {
 class Stack {
     StackNode* top;
 public:
-    Stack() { top = NULL; }
-    void push(char c) { StackNode* t = new StackNode{c, top}; top = t; }
-    void pop() { if(top) { StackNode* t = top; top = top->next; delete t; } }
-    char getTop() { return top ? top->data : '\0'; }
-    bool empty() { return top == NULL; }
+    Stack() { 
+        top = NULL; 
+    }
+    
+    void push(char c) { 
+        StackNode* t = new StackNode{c, top}; 
+        top = t; 
+    }
+    
+    void pop() { 
+        if(top) { 
+            StackNode* t = top; 
+            top = top->next; 
+            delete t; 
+        } 
+    }
+    
+    char getTop() { 
+        return top ? top->data : '\0'; 
+    }
+    
+    bool empty() { 
+        return top == NULL; 
+    }
 };
 
 bool isBalanced(string expr) {
