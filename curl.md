@@ -1,12 +1,43 @@
 # Code Repository
 
-Here are the links to the curl commands for each topic:
+Here are the PowerShell commands to access each topic's curl.md:
 
-- [Arrays_Strings](Arrays_Strings/curl.md)
-- [Graphs](Graphs/curl.md)
-- [Hashing](Hashing/curl.md)
-- [Linked_Lists](Linked_Lists/curl.md)
-- [Queues](Queues/curl.md)
-- [Searching_Sorting](Searching_Sorting/curl.md)
-- [Stacks](Stacks/curl.md)
-- [Trees](Trees/curl.md)
+## Arrays_Strings
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Arrays_Strings/curl.md"
+```
+
+## Graphs
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Graphs/curl.md"
+```
+
+## Hashing
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Hashing/curl.md"
+```
+
+## Linked_Lists
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Linked_Lists/curl.md"
+```
+
+## Queues
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Queues/curl.md"
+```
+
+## Searching_Sorting
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Searching_Sorting/curl.md"
+```
+
+## Stacks
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Stacks/curl.md"
+```
+
+## Trees
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Trees/curl.md"
+```
