@@ -32,9 +32,12 @@ class BinaryTree {
     }
 
 public:
-    BinaryTree() {
+    BinaryTree() { root = NULL; }
+
+    void buildTree() {
         root = new Node{1, new Node{2, NULL, NULL}, new Node{3, NULL, NULL}};
         root->left->left = new Node{4, NULL, NULL};
+        root->right->right = new Node{5, NULL, NULL};
     }
 
     void display() {
@@ -46,6 +49,8 @@ public:
 
 int main() {
     BinaryTree bt;
+    bt.buildTree();
     bt.display();
     return 0;
 }
+// Recursive inorder, preorder traversal and leaf node count | Time: O(n)

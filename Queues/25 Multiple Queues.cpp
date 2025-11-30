@@ -51,3 +51,4 @@ int main() {
     tq.display();
     return 0;
 }
+// Two queues in single array from opposite ends | Time: O(1)

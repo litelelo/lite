@@ -53,3 +53,4 @@ int main() {
     sh.search(999);
     return 0;
 }
+// Hash table for student records using linear probing | Time: O(1) avg, O(n) worst

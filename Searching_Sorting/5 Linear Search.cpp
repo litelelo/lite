@@ -41,3 +41,4 @@ int main() {
 
     return 0;
 }
+// Linear search for student by multiple attributes | Time: O(n)

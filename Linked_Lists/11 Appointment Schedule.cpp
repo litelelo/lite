@@ -94,3 +94,4 @@ int main() {
     s.display();
     return 0;
 }
+// Linked list appointment scheduler with time validation and overlap detection | Time: O(n)

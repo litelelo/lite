@@ -44,3 +44,4 @@ int main() {
     cout << "Latest after remove: " << st.latest() << endl;
     return 0;
 }
+// Stack using linked list for stock price tracking (LIFO) | Time: O(1)

@@ -1,6 +1,20 @@
 #include <iostream>
-#include <stack>
 using namespace std;
+
+struct StackNode {
+    Node* data;
+    StackNode* next;
+};
+
+class Stack {
+    StackNode* top;
+public:
+    Stack() { top = NULL; }
+    void push(Node* val) { StackNode* t = new StackNode{val, top}; top = t; }
+    void pop() { if(top) { StackNode* t = top; top = top->next; delete t; } }
+    Node* getTop() { return top ? top->data : NULL; }
+    bool empty() { return top == NULL; }
+};
 
 struct Node {
     int data;
@@ -22,14 +36,14 @@ public:
     }
 
     void inorderNonRecursive() {
-        stack<Node*> s;
+        Stack s;
         Node* curr = root;
         while (curr != NULL || !s.empty()) {
             while (curr != NULL) {
                 s.push(curr);
                 curr = curr->left;
             }
-            curr = s.top();
+            curr = s.getTop();
             s.pop();
             cout << curr->data << " ";
             curr = curr->right;
@@ -49,3 +63,4 @@ int main() {
     bt.inorderNonRecursive();
     return 0;
 }
+// Non-recursive inorder traversal using stack | Time: O(n)

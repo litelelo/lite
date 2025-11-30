@@ -1,10 +1,24 @@
 #include <iostream>
-#include <stack>
 #include <string>
 using namespace std;
 
+struct StackNode {
+    char data;
+    StackNode* next;
+};
+
+class Stack {
+    StackNode* top;
+public:
+    Stack() { top = NULL; }
+    void push(char c) { StackNode* t = new StackNode{c, top}; top = t; }
+    void pop() { if(top) { StackNode* t = top; top = top->next; delete t; } }
+    char getTop() { return top ? top->data : '\0'; }
+    bool empty() { return top == NULL; }
+};
+
 bool isBalanced(string expr) {
-    stack<char> s;
+    Stack s;
     char x;
 
     for (int i = 0; i < expr.length(); i++) {
@@ -17,17 +31,17 @@ bool isBalanced(string expr) {
 
         switch (expr[i]) {
         case ')':
-            x = s.top();
+            x = s.getTop();
             s.pop();
             if (x == '{' || x == '[') return false;
             break;
         case '}':
-            x = s.top();
+            x = s.getTop();
             s.pop();
             if (x == '(' || x == '[') return false;
             break;
         case ']':
-            x = s.top();
+            x = s.getTop();
             s.pop();
             if (x == '(' || x == '{') return false;
             break;
@@ -37,8 +51,11 @@ bool isBalanced(string expr) {
 }
 
 int main() {
-    string expr = "{()}[]";
+    string expr;
+    cout << "Enter expression with parentheses: ";
+    cin >> expr;
     if (isBalanced(expr)) cout << "Balanced";
     else cout << "Not Balanced";
     return 0;
 }
+// Balanced parentheses checker using stack | Time: O(n)

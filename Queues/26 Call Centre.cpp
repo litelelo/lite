@@ -45,3 +45,4 @@ int main() {
     cc.dequeue();
     return 0;
 }
+// Queue using linked list for call center management | Time: O(1)

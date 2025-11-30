@@ -45,3 +45,4 @@ int main() {
     cout << "Passengers left: " << pq.count() << endl;
     return 0;
 }
+// Linear queue for passenger ticket management | Time: O(1)

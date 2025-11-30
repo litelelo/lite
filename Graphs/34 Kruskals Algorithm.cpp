@@ -48,3 +48,4 @@ int main() {
     cout << "Total Weight: " << mst_weight << endl;
     return 0;
 }
+// Kruskal's algorithm for MST using union-find (DSU) | Time: O(E log E)

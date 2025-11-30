@@ -59,3 +59,4 @@ int main() {
     s.simpleTranspose();
     return 0;
 }
+// Sparse matrix representation with simple transpose | Time: O(rows * nonzero)

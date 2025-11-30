@@ -97,3 +97,4 @@ int main() {
 
     return 0;
 }
+// Set operations (intersection, symmetric difference) using linked lists | Time: O(n²)

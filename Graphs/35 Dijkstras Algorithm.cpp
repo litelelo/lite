@@ -48,3 +48,4 @@ int main() {
     dijkstra(graph, 0);
     return 0;
 }
+// Dijkstra's shortest path algorithm using adjacency matrix | Time: O(V²)

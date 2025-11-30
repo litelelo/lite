@@ -68,3 +68,4 @@ int main() {
     cout << "Popped from 0: " << ms.pop(0) << endl;
     return 0;
 }
+// Multiple stacks in single array using next-free array technique | Time: O(1)

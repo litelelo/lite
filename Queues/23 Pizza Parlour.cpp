@@ -40,3 +40,4 @@ int main() {
     p.placeOrder(103);
     return 0;
 }
+// Circular queue for pizza order management (FCFS) | Time: O(1)

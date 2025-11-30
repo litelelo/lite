@@ -42,3 +42,4 @@ int main() {
     cout << "Max: " << tree.findMax() << endl;
     return 0;
 }
+// BST find minimum and maximum values | Time: O(h) where h=height

@@ -65,3 +65,4 @@ int main() {
     list.display();
     return 0;
 }
+// Doubly linked list with insert/delete at front and end | Time: O(n)

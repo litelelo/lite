@@ -67,3 +67,4 @@ int main() {
     s.fastTranspose();
     return 0;
 }
+// Fast transpose of sparse matrix using index and total arrays | Time: O(cols + nonzero)

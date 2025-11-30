@@ -43,3 +43,4 @@ int main() {
     tree.displayStats();
     return 0;
 }
+// BST node count and height calculation recursively | Time: O(n)

@@ -37,3 +37,4 @@ int main() {
     q.assignDoctor();
     return 0;
 }
+// Linear queue for patient-doctor assignment (FCFS) | Time: O(1)

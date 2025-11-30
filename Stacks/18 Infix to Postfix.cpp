@@ -1,7 +1,21 @@
 #include <iostream>
-#include <stack>
 #include <string>
 using namespace std;
+
+struct StackNode {
+    char data;
+    StackNode* next;
+};
+
+class Stack {
+    StackNode* top;
+public:
+    Stack() { top = NULL; }
+    void push(char c) { StackNode* t = new StackNode{c, top}; top = t; }
+    void pop() { if(top) { StackNode* t = top; top = top->next; delete t; } }
+    char getTop() { return top ? top->data : '\0'; }
+    bool empty() { return top == NULL; }
+};
 
 int prec(char c) {
     if (c == '^') return 3;
@@ -11,7 +25,7 @@ int prec(char c) {
 }
 
 void infixToPostfix(string s) {
-    stack<char> st;
+    Stack st;
     string result;
 
     for (int i = 0; i < s.length(); i++) {
@@ -22,14 +36,14 @@ void infixToPostfix(string s) {
         else if (c == '(')
             st.push('(');
         else if (c == ')') {
-            while (st.top() != '(') {
-                result += st.top();
+            while (st.getTop() != '(') {
+                result += st.getTop();
                 st.pop();
             }
             st.pop();
         } else {
-            while (!st.empty() && prec(s[i]) <= prec(st.top())) {
-                result += st.top();
+            while (!st.empty() && prec(s[i]) <= prec(st.getTop())) {
+                result += st.getTop();
                 st.pop();
             }
             st.push(c);
@@ -38,7 +52,7 @@ void infixToPostfix(string s) {
     }
 
     while (!st.empty()) {
-        result += st.top();
+        result += st.getTop();
         st.pop();
     }
 
@@ -46,7 +60,10 @@ void infixToPostfix(string s) {
 }
 
 int main() {
-    string exp = "a-b*c-d/e+f";
+    string exp;
+    cout << "Enter infix expression: ";
+    cin >> exp;
     infixToPostfix(exp);
     return 0;
 }
+// Infix to postfix conversion using stack and operator precedence | Time: O(n)

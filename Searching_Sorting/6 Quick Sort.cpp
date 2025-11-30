@@ -78,3 +78,4 @@ int main() {
 
     return 0;
 }
+// Quick sort with divide-and-conquer min/max finder | Time: O(n log n) avg, O(n²) worst

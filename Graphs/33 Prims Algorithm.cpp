@@ -50,3 +50,4 @@ int main() {
     primMST(graph);
     return 0;
 }
+// Prim's algorithm for minimum spanning tree using adjacency matrix | Time: O(V²)

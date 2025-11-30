@@ -64,3 +64,4 @@ int main() {
     
     return 0;
 }
+// String operations: length, copy, reverse, concat without built-in functions | Time: O(n)

@@ -37,3 +37,4 @@ int main() {
     ht.display();
     return 0;
 }
+// Hash table with linear probing for collision resolution | Time: O(1) avg, O(n) worst

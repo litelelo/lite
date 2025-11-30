@@ -1,7 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <iomanip>
-
 using namespace std;
 
 void generateOddMagicSquare(int n) {
@@ -30,7 +28,7 @@ void generateOddMagicSquare(int n) {
     cout << "The Magic Square for n=" << n << ":\nSum of each row or column " << n * (n * n + 1) / 2 << ":\n\n";
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++)
-            cout << setw(4) << magicSquare[i][j] << " ";
+            cout << magicSquare[i][j] << " ";
         cout << endl;
     }
 }
@@ -46,3 +44,4 @@ int main() {
     }
     return 0;
 }
+// Magic square generation for odd order using Siamese method | Time: O(n²)
