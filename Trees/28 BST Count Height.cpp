@@ -39,7 +39,16 @@ public:
 
 int main() {
     BST tree;
-    tree.insert(10); tree.insert(5); tree.insert(15); tree.insert(3);
+    int n, val;
+    
+    cout << "Enter number of nodes to insert: ";
+    cin >> n;
+    cout << "Enter values: ";
+    for (int i = 0; i < n; i++) {
+        cin >> val;
+        tree.insert(val);
+    }
+    
     tree.displayStats();
     return 0;
 }

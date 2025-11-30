@@ -75,10 +75,20 @@ public:
 
 int main() {
     BinaryTree bt;
-    bt.root = new Node{1, NULL, NULL};
-    bt.root->left = new Node{2, NULL, NULL};
-    bt.root->right = new Node{3, NULL, NULL};
-    bt.root->left->left = new Node{4, NULL, NULL};
+    int n, val;
+    
+    cout << "Enter root value: ";
+    cin >> val;
+    bt.root = new Node{val, NULL, NULL};
+    
+    cout << "Enter number of additional nodes: ";
+    cin >> n;
+    
+    for (int i = 0; i < n; i++) {
+        cout << "Enter value: ";
+        cin >> val;
+        bt.insert(val);
+    }
     
     cout << "Inorder Non-Recursive: ";
     bt.inorderNonRecursive();

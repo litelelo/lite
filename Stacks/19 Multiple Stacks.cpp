@@ -55,17 +55,44 @@ public:
 };
 
 int main() {
-    int k = 3, n = 10;
+    int k, n, choice, item, stackNum;
+    
+    cout << "Enter number of stacks: ";
+    cin >> k;
+    cout << "Enter total array size: ";
+    cin >> n;
+    
     MultiStack ms(k, n);
-    ms.push(10, 0); ms.push(20, 0);
-    ms.push(30, 1);
-    ms.push(40, 2);
     
-    cout << "Stack 0: "; ms.display(0);
-    cout << "Stack 1: "; ms.display(1);
-    cout << "Stack 2: "; ms.display(2);
-    
-    cout << "Popped from 0: " << ms.pop(0) << endl;
+    while (true) {
+        cout << "\n1. Push\n2. Pop\n3. Display Stack\n4. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+        
+        if (choice == 1) {
+            cout << "Enter stack number (0-" << k-1 << "): ";
+            cin >> stackNum;
+            cout << "Enter item: ";
+            cin >> item;
+            ms.push(item, stackNum);
+        } else if (choice == 2) {
+            cout << "Enter stack number (0-" << k-1 << "): ";
+            cin >> stackNum;
+            item = ms.pop(stackNum);
+            if (item != -1) {
+                cout << "Popped: " << item << endl;
+            }
+        } else if (choice == 3) {
+            cout << "Enter stack number (0-" << k-1 << "): ";
+            cin >> stackNum;
+            cout << "Stack " << stackNum << ": ";
+            ms.display(stackNum);
+        } else if (choice == 4) {
+            break;
+        } else {
+            cout << "Invalid choice!\n";
+        }
+    }
     return 0;
 }
 // Multiple stacks in single array using next-free array technique | Time: O(1)

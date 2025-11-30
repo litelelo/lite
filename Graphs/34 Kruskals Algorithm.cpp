@@ -28,21 +28,31 @@ struct DSU {
 };
 
 int main() {
-    int V = 4;
-    vector<Edge> edges = {
-        {0, 1, 10}, {0, 2, 6}, {0, 3, 5}, {1, 3, 15}, {2, 3, 4}
-    };
+    int V, e, u, v, w;
+    cout << "Enter number of vertices: ";
+    cin >> V;
+    
+    cout << "Enter number of edges: ";
+    cin >> e;
+    
+    vector<Edge> edges;
+    cout << "Enter edges (u v weight):\n";
+    for (int i = 0; i < e; i++) {
+        cin >> u >> v >> w;
+        edges.push_back({u, v, w});
+    }
 
     sort(edges.begin(), edges.end(), compareEdges);
 
     DSU dsu(V);
     int mst_weight = 0;
-    cout << "Edges in MST:\n";
-    for (Edge e : edges) {
-        if (dsu.find(e.u) != dsu.find(e.v)) {
-            dsu.unite(e.u, e.v);
-            mst_weight += e.w;
-            cout << e.u << " -- " << e.v << " == " << e.w << endl;
+    cout << "\nEdges in MST:\n";
+    for (int i = 0; i < edges.size(); i++) {
+        Edge edge = edges[i];
+        if (dsu.find(edge.u) != dsu.find(edge.v)) {
+            dsu.unite(edge.u, edge.v);
+            mst_weight += edge.w;
+            cout << edge.u << " -- " << edge.v << " == " << edge.w << endl;
         }
     }
     cout << "Total Weight: " << mst_weight << endl;

@@ -85,19 +85,46 @@ public:
 
 int main() {
     VertexClub divA, divB;
-    divA.addPresident(1, "PresA");
-    divA.addMember(2, "MemA1");
-    divA.addSecretary(3, "SecA");
+    int choice, prn, n;
+    string name;
     
-    divB.addPresident(4, "PresB");
-    divB.addMember(5, "MemB1");
-    divB.addSecretary(6, "SecB");
+    cout << "Enter number of members for Division A: ";
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cout << "Enter PRN and Name: ";
+        cin >> prn >> name;
+        if (i == 0) {
+            divA.addPresident(prn, name);
+        } else if (i == n - 1) {
+            divA.addSecretary(prn, name);
+        } else {
+            divA.addMember(prn, name);
+        }
+    }
+    
+    cout << "\nEnter number of members for Division B: ";
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cout << "Enter PRN and Name: ";
+        cin >> prn >> name;
+        if (i == 0) {
+            divB.addPresident(prn, name);
+        } else if (i == n - 1) {
+            divB.addSecretary(prn, name);
+        } else {
+            divB.addMember(prn, name);
+        }
+    }
 
-    cout << "Div A: "; divA.display();
+    cout << "\nDiv A: "; divA.display();
     cout << "Div B: "; divB.display();
+    
+    cout << "\nTotal members in Div A: " << divA.countMembers() << endl;
+    cout << "Total members in Div B: " << divB.countMembers() << endl;
 
     divA.concatenate(divB);
-    cout << "Concatenated: "; divA.display();
+    cout << "\nAfter Concatenation: "; divA.display();
+    cout << "Total members: " << divA.countMembers() << endl;
 
     return 0;
 }

@@ -37,12 +37,25 @@ public:
 
 int main() {
     CallCentre cc;
-    cc.dequeue();
-    cc.enqueue(101);
-    cc.enqueue(102);
-    cc.dequeue();
-    cc.dequeue();
-    cc.dequeue();
+    int choice, callId;
+    
+    while (true) {
+        cout << "\n1. Receive Call\n2. Assist Call\n3. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+        
+        if (choice == 1) {
+            cout << "Enter call ID: ";
+            cin >> callId;
+            cc.enqueue(callId);
+        } else if (choice == 2) {
+            cc.dequeue();
+        } else if (choice == 3) {
+            break;
+        } else {
+            cout << "Invalid choice!\n";
+        }
+    }
     return 0;
 }
 // Queue using linked list for call center management | Time: O(1)

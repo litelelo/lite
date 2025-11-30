@@ -60,10 +60,25 @@ public:
 
 int main() {
     Polynomial p1, p2;
-    p1.addTerm(3, 2); p1.addTerm(5, 0);
-    p2.addTerm(4, 2); p2.addTerm(1, 1);
+    int n, coeff, exp;
+    
+    cout << "Enter number of terms in Polynomial 1: ";
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cout << "Enter coefficient and exponent: ";
+        cin >> coeff >> exp;
+        p1.addTerm(coeff, exp);
+    }
+    
+    cout << "\nEnter number of terms in Polynomial 2: ";
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cout << "Enter coefficient and exponent: ";
+        cin >> coeff >> exp;
+        p2.addTerm(coeff, exp);
+    }
 
-    cout << "P1: "; p1.display();
+    cout << "\nP1: "; p1.display();
     cout << "P2: "; p2.display();
 
     Polynomial p3 = Polynomial::add(p1, p2);

@@ -37,11 +37,44 @@ public:
 
 int main() {
     StockTracker st;
-    st.record(100);
-    st.record(105);
-    cout << "Latest: " << st.latest() << endl;
-    st.remove();
-    cout << "Latest after remove: " << st.latest() << endl;
+    int choice, price;
+    
+    while (true) {
+        cout << "\n1. Record Price\n2. Remove Latest\n3. View Latest\n4. Check if Empty\n5. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+        
+        if (choice == 1) {
+            cout << "Enter stock price: ";
+            cin >> price;
+            st.record(price);
+            cout << "Price recorded.\n";
+        } else if (choice == 2) {
+            price = st.remove();
+            if (price != -1) {
+                cout << "Removed price: " << price << endl;
+            } else {
+                cout << "Stack is empty!\n";
+            }
+        } else if (choice == 3) {
+            price = st.latest();
+            if (price != -1) {
+                cout << "Latest price: " << price << endl;
+            } else {
+                cout << "Stack is empty!\n";
+            }
+        } else if (choice == 4) {
+            if (st.isEmpty()) {
+                cout << "Stack is empty.\n";
+            } else {
+                cout << "Stack is not empty.\n";
+            }
+        } else if (choice == 5) {
+            break;
+        } else {
+            cout << "Invalid choice!\n";
+        }
+    }
     return 0;
 }
 // Stack using linked list for stock price tracking (LIFO) | Time: O(1)

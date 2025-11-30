@@ -49,6 +49,7 @@ public:
 
 int main() {
     BinaryTree bt;
+    cout << "Building predefined binary tree...\n";
     bt.buildTree();
     bt.display();
     return 0;

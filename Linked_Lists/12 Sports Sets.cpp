@@ -81,17 +81,31 @@ public:
 
 int main() {
     Set cricket, football;
-    cricket.insert(1); cricket.insert(2); cricket.insert(3);
-    football.insert(3); football.insert(4); football.insert(5);
+    int n, id, totalStudents;
+    
+    cout << "Enter number of students who like Cricket: ";
+    cin >> n;
+    cout << "Enter student IDs: ";
+    for (int i = 0; i < n; i++) {
+        cin >> id;
+        cricket.insert(id);
+    }
+    
+    cout << "\nEnter number of students who like Football: ";
+    cin >> n;
+    cout << "Enter student IDs: ";
+    for (int i = 0; i < n; i++) {
+        cin >> id;
+        football.insert(id);
+    }
 
-    cout << "Cricket: "; cricket.display();
+    cout << "\nCricket: "; cricket.display();
     cout << "Football: "; football.display();
 
     Set::intersection(cricket, football);
     Set::symmetricDifference(cricket, football);
     
-    int totalStudents;
-    cout << "Enter total number of students in class: ";
+    cout << "\nEnter total number of students in class: ";
     cin >> totalStudents;
     cout << "Neither Cricket nor Football: " << totalStudents - Set::unionCount(cricket, football) << endl;
 

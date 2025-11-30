@@ -42,11 +42,25 @@ public:
 };
 
 int main() {
-    Graph g(4);
-    g.addEdge(0, 1); g.addEdge(0, 2);
-    g.addEdge(1, 2); g.addEdge(2, 0);
-    g.addEdge(2, 3); g.addEdge(3, 3);
-    g.BFS(2);
+    int V, e, u, v, start;
+    cout << "Enter number of vertices: ";
+    cin >> V;
+    
+    Graph g(V);
+    
+    cout << "Enter number of edges: ";
+    cin >> e;
+    
+    cout << "Enter edges (u v):\n";
+    for (int i = 0; i < e; i++) {
+        cin >> u >> v;
+        g.addEdge(u, v);
+    }
+    
+    cout << "Enter start vertex for BFS: ";
+    cin >> start;
+    
+    g.BFS(start);
     return 0;
 }
 // Graph BFS traversal using adjacency list representation | Time: O(V+E)

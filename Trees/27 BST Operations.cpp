@@ -114,11 +114,33 @@ public:
 
 int main() {
     BST tree;
-    tree.insert(50); tree.insert(30); tree.insert(20); tree.insert(40); tree.insert(70);
-    cout << "Inorder: "; tree.display();
-    cout << "Level Order: "; tree.levelOrder();
-    tree.remove(20);
-    cout << "After delete 20: "; tree.display();
+    int choice, val;
+    
+    while (true) {
+        cout << "\n1. Insert\n2. Delete\n3. Display Inorder\n4. Display Level Order\n5. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+        
+        if (choice == 1) {
+            cout << "Enter value: ";
+            cin >> val;
+            tree.insert(val);
+        } else if (choice == 2) {
+            cout << "Enter value to delete: ";
+            cin >> val;
+            tree.remove(val);
+        } else if (choice == 3) {
+            cout << "Inorder: ";
+            tree.display();
+        } else if (choice == 4) {
+            cout << "Level Order: ";
+            tree.levelOrder();
+        } else if (choice == 5) {
+            break;
+        } else {
+            cout << "Invalid choice!\n";
+        }
+    }
     return 0;
 }
 // BST with insert, delete, inorder, level-order traversal | Time: O(h) where h=height

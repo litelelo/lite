@@ -57,8 +57,17 @@ public:
 
 int main() {
     DLL list;
-    list.insert(5); list.insert(3); list.insert(8); list.insert(1);
-    cout << "Original: "; list.display();
+    int n, val;
+    
+    cout << "Enter number of elements: ";
+    cin >> n;
+    cout << "Enter elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> val;
+        list.insert(val);
+    }
+    
+    cout << "\nOriginal: "; list.display();
     list.bubbleSort();
     cout << "Sorted: "; list.display();
     return 0;

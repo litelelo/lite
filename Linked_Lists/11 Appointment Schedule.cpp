@@ -85,13 +85,38 @@ public:
 };
 
 int main() {
-    Schedule s(1, 4); // Min 1 hr, Max 4 hrs
-    s.book(9, 10);
-    s.book(11, 13);
-    s.book(10, 12); // Overlap
-    s.display();
-    s.cancel(9);
-    s.display();
+    int minDur, maxDur, choice, start, end;
+    
+    cout << "Enter minimum appointment duration (hours): ";
+    cin >> minDur;
+    cout << "Enter maximum appointment duration (hours): ";
+    cin >> maxDur;
+    
+    Schedule s(minDur, maxDur);
+    
+    while (true) {
+        cout << "\n1. Book Appointment\n2. Cancel Appointment\n3. Display Schedule\n4. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+        
+        if (choice == 1) {
+            cout << "Enter start time: ";
+            cin >> start;
+            cout << "Enter end time: ";
+            cin >> end;
+            s.book(start, end);
+        } else if (choice == 2) {
+            cout << "Enter start time of appointment to cancel: ";
+            cin >> start;
+            s.cancel(start);
+        } else if (choice == 3) {
+            s.display();
+        } else if (choice == 4) {
+            break;
+        } else {
+            cout << "Invalid choice!\n";
+        }
+    }
     return 0;
 }
 // Linked list appointment scheduler with time validation and overlap detection | Time: O(n)

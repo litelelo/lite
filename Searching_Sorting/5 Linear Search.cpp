@@ -20,10 +20,17 @@ int main() {
         cin >> students[i].rollNo >> students[i].name >> students[i].division >> students[i].year;
     }
 
-    int searchRoll = 17;
-    string searchName = "XYZ";
-    string searchDiv = "X";
-    string searchYear = "SY";
+    int searchRoll;
+    string searchName, searchDiv, searchYear;
+    
+    cout << "Enter Roll No to search: ";
+    cin >> searchRoll;
+    cout << "Enter Name to search: ";
+    cin >> searchName;
+    cout << "Enter Division to search: ";
+    cin >> searchDiv;
+    cout << "Enter Year to search: ";
+    cin >> searchYear;
 
     bool found = false;
     for (int i = 0; i < n; i++) {

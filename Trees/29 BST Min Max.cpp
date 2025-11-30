@@ -37,7 +37,16 @@ public:
 
 int main() {
     BST tree;
-    tree.insert(20); tree.insert(10); tree.insert(30);
+    int n, val;
+    
+    cout << "Enter number of nodes to insert: ";
+    cin >> n;
+    cout << "Enter values: ";
+    for (int i = 0; i < n; i++) {
+        cin >> val;
+        tree.insert(val);
+    }
+    
     cout << "Min: " << tree.findMin() << endl;
     cout << "Max: " << tree.findMax() << endl;
     return 0;
