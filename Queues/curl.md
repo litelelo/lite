@@ -2,25 +2,25 @@
 
 ## 22 Patient Queue.cpp
 ```powershell
-Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Queues/22%20Patient%20Queue.cpp"
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Queues/22%20Patient%20Queue.cpp"
 ```
 
 ## 23 Pizza Parlour.cpp
 ```powershell
-Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Queues/23%20Pizza%20Parlour.cpp"
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Queues/23%20Pizza%20Parlour.cpp"
 ```
 
 ## 24 Passenger Queue.cpp
 ```powershell
-Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Queues/24%20Passenger%20Queue.cpp"
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Queues/24%20Passenger%20Queue.cpp"
 ```
 
 ## 25 Multiple Queues.cpp
 ```powershell
-Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Queues/25%20Multiple%20Queues.cpp"
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Queues/25%20Multiple%20Queues.cpp"
 ```
 
 ## 26 Call Centre.cpp
 ```powershell
-Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/main/Queues/26%20Call%20Centre.cpp"
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Queues/26%20Call%20Centre.cpp"
 ```

@@ -1,75 +1,106 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
-class PizzaParlour {
-    int *orders;
-    int front, rear, maxSize;
-public:
-    PizzaParlour(int size) {
-        maxSize = size;
-        orders = new int[maxSize];
-        front = -1;
-        rear = -1;
-    }
-
-    void placeOrder(int id) {
-        if ((front == 0 && rear == maxSize - 1) || (rear == (front - 1) % (maxSize - 1))) {
-            cout << "Orders Full\n";
-            return;
-        }
-        if (front == -1) {
-            front = 0;
-            rear = 0;
-        } else if (rear == maxSize - 1 && front != 0) {
-            rear = 0;
-        } else {
-            rear++;
-        }
-        orders[rear] = id;
-        cout << "Order " << id << " placed.\n";
-    }
-
-    void serveOrder() {
-        if (front == -1) {
-            cout << "No orders.\n";
-            return;
-        }
-        cout << "Order " << orders[front] << " served.\n";
-        if (front == rear) {
-            front = -1;
-            rear = -1;
-        } else if (front == maxSize - 1) {
-            front = 0;
-        } else {
-            front++;
-        }
-    }
+const int SIZE = 5;
+struct order {
+    string name;
+    float price;
 };
 
-int main() {
-    int size, choice, orderId;
-    
-    cout << "Enter queue size: ";
-    cin >> size;
-    PizzaParlour p(size);
-    
-    while (true) {
-        cout << "\n1. Place Order\n2. Serve Order\n3. Exit\n";
-        cout << "Enter choice: ";
-        cin >> choice;
-        
-        if (choice == 1) {
-            cout << "Enter order ID: ";
-            cin >> orderId;
-            p.placeOrder(orderId);
-        } else if (choice == 2) {
-            p.serveOrder();
-        } else if (choice == 3) {
-            break;
-        } else {
-            cout << "Invalid choice!\n";
+struct queue{
+    order queue[SIZE];
+    int front, rear;
+} q = { {}, -1, -1 };
+
+bool isFull(){
+    if(q.front == (q.rear+1)%SIZE) return true; 
+    else return false;
+}
+
+bool isEmpty(){
+    if(q.front == -1) return true; 
+    else return false;
+}
+
+void enqueue(){
+    if(isFull()) {
+        cout << "\nWe are not accepting orders at the moment! Try again in some time!";
+        return;
+    }
+    order o;
+    cout << "Enter pizza name: ";
+    cin.ignore();
+    getline(cin, o.name);
+    cout << "Enter price: ";
+    cin >> o.price;
+    if(isEmpty()) {
+        q.rear = q.front = 0;
+        q.queue[q.rear] = o;
+    }
+    else{
+        q.rear = (q.rear+1)%SIZE;
+        q.queue[q.rear] = o;
+    }
+}
+
+void dequeue(){
+    if(isEmpty()) cout << "\nThere are no orders to dequeue!";
+    else{
+        order o = q.queue[q.front];
+        if(q.front == q.rear) q.front = q.rear = -1;
+        else q.front = (q.front+1)%SIZE;
+
+        cout << "\nDequeued order: " << o.name << " | Price: Rs. " << o.price;
+    }
+}
+
+void display(){
+    if(isEmpty()){
+        cout << "\nThere are no orders to display!";
+        return;
+    } 
+    else {
+        cout << "\nOrders in queue: " << endl;
+        if(q.rear>=q.front)
+            for(int i=q.front; i<=q.rear; i++)
+                cout << "\t" << q.queue[i].name << " | Price: Rs. " << q.queue[i].price << endl;
+        else {
+            for(int i=q.front; i<SIZE; i++)
+                cout << "\t" << q.queue[i].name << " | Price: Rs. " << q.queue[i].price << endl;
+            for(int i=0; i<=q.rear; i++)
+                cout << "\t" << q.queue[i].name << " | Price: Rs. " << q.queue[i].price << endl;
         }
     }
+}
+
+int main() {
+    int choice;
+    do {
+        cout << "\n--- Pizza Parlour Menu ---" << endl;
+        cout << "1. Place Order (Enqueue)" << endl;
+        cout << "2. Serve Order (Dequeue)" << endl;
+        cout << "3. Display Orders" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch(choice) {
+            case 1:
+                enqueue();
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                cout << "Exiting..." << endl;
+                break;
+            default:
+                cout << "Invalid choice!" << endl;
+        }
+    } while(choice != 4);
     return 0;
 }
-// Circular queue for pizza order management (FCFS) | Time: O(1)
+// Circular queue for pizza order management | Operations: place order, serve order, display orders | Time: O(1) | Space: O(n)

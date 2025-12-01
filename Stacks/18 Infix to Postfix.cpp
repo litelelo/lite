@@ -1,88 +1,133 @@
 #include <iostream>
-#include <string>
+#include <cstring>
+#include <cstdlib>
 using namespace std;
 
-struct StackNode {
+typedef struct SLL {
     char data;
-    StackNode* next;
-};
+    struct SLL *next;
+} *node;
 
-class Stack {
-    StackNode* top;
-public:
-    Stack() { 
-        top = NULL; 
-    }
-    
-    void push(char c) { 
-        StackNode* t = new StackNode{c, top}; 
-        top = t; 
-    }
-    
-    void pop() { 
-        if(top) { 
-            StackNode* t = top; 
-            top = top->next; 
-            delete t; 
-        } 
-    }
-    
-    char getTop() { 
-        return top ? top->data : '\0'; 
-    }
-    
-    bool empty() { 
-        return top == NULL; 
-    }
-};
+node top = NULL;
 
-int prec(char c) {
-    if (c == '^') return 3;
-    if (c == '/' || c == '*') return 2;
-    if (c == '+' || c == '-') return 1;
-    return -1;
+void push(char ch) {
+    node newnode = (node)malloc(sizeof(node));
+    newnode->data = ch;
+    newnode->next = top;
+    top = newnode;
 }
 
-void infixToPostfix(string s) {
-    Stack st;
-    string result;
+char pop() {
+    if (top == NULL) {
+        return '\0'; 
+    } else {
+        char ch = top->data;
+        node temp = top;
+        top = top->next;
+        free(temp);
+        return ch;
+    }
+}
 
-    for (int i = 0; i < s.length(); i++) {
-        char c = s[i];
+char peek() {
+    if (top == NULL) {
+        return '\0';
+    } else {
+        return top->data;
+    }
+}
 
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
-            result += c;
-        else if (c == '(')
-            st.push('(');
-        else if (c == ')') {
-            while (st.getTop() != '(') {
-                result += st.getTop();
-                st.pop();
-            }
-            st.pop();
-        } else {
-            while (!st.empty() && prec(s[i]) <= prec(st.getTop())) {
-                result += st.getTop();
-                st.pop();
-            }
-            st.push(c);
+bool isEmpty() {
+    return (top == NULL);
+}
+
+int getWeight(char ch) {
+    switch (ch) {
+        case '/':
+        case '*': return 2;
+        case '+':
+        case '-': return 1;
+        default : return 0;
+    }
+}
+
+void infix2postfix(char infix[], char postfix[], int size) {
+    int weight;
+    int i = 0;
+    int k = 0;
+    char ch;
+      
+    while (i < size) {
+        ch = infix[i];
+        
+        if (ch == '(') {
+            push(ch);
+            i++;
+            continue;
         }
-        cout << "Step " << i + 1 << ": " << result << endl;
+        
+        if (ch == ')') {
+            while (!isEmpty() && peek() != '(') {
+                postfix[k++] = pop();
+            }
+            // Pop off the opening parenthesis also
+            if (!isEmpty()) {
+                pop();
+            }
+            i++;
+            continue;
+        }
+        
+        weight = getWeight(ch);
+        if (weight == 0) {
+            postfix[k++] = ch;
+        } else {
+            if (isEmpty()) {
+                push(ch);
+            } else {
+                while (!isEmpty() && peek() != '(' && weight <= getWeight(peek())) {
+                    postfix[k++] = pop();
+                }
+                push(ch);
+            }
+        }
+        i++;
     }
-
-    while (!st.empty()) {
-        result += st.getTop();
-        st.pop();
+    
+    while (!isEmpty()) {
+        postfix[k++] = pop();
     }
+    postfix[k] = '\0'; 
+}
 
-    cout << "Postfix: " << result << endl;
+void displayStack() {
+    if (isEmpty()) {
+        cout << "Stack is empty!" << endl;
+    } else {
+        node temp = top;
+        cout << "Stack contents (top to bottom): ";
+        while (temp != NULL) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
 }
 
 int main() {
-    string exp;
-    cout << "Enter infix expression: ";
-    cin >> exp;
-    infixToPostfix(exp);
+    char infix[50];
+    cout << "\nEnter the Infix Expression: ";
+    cin >> infix;
+    
+    int size = strlen(infix);
+    char postfix[50]; 
+    
+    infix2postfix(infix, postfix, size);
+    
+    cout << "\nInfix Expression  : " << infix;
+    cout << "\nPostfix Expression: " << postfix;
+    cout << endl;
+    
     return 0;
 }
-// Infix to postfix conversion using stack and operator precedence | Time: O(n)
+// Infix to postfix conversion using stack with operator precedence | Time: O(n) | Space: O(n)

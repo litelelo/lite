@@ -1,68 +1,57 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 struct Student {
-    int id;
+    char name[50];
+    int rollno;
     float marks;
-    int rollNo;
 };
 
-void bubbleSort(Student arr[], int n) {
+bool isDuplicateRollNo(const vector<Student>& students, int rollno, int currentIndex) {
+    for (int i = 0; i < currentIndex; i++) {
+        if (students[i].rollno == rollno) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void bubbleSort(vector<Student>& students, int n) {
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j].marks < arr[j + 1].marks) { // Descending for topper = 1
-                Student temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+            if (students[j].marks < students[j + 1].marks) {
+                Student temp = students[j];          
+                students[j] = students[j + 1];        
+                students[j + 1] = temp;               
             }
         }
-        cout << "Pass " << i + 1 << ": ";
-        for(int k=0; k<n; k++) cout << arr[k].marks << " ";
-        cout << endl;
     }
-}
 
-void selectionSort(Student arr[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        int max_idx = i;
-        for (int j = i + 1; j < n; j++) {
-            if (arr[j].marks > arr[max_idx].marks)
-                max_idx = j;
-        }
-        Student temp = arr[max_idx];
-        arr[max_idx] = arr[i];
-        arr[i] = temp;
-        
-        cout << "Pass " << i + 1 << ": ";
-        for(int k=0; k<n; k++) cout << arr[k].marks << " ";
-        cout << endl;
-    }
-}
-
-int main() {
-    int n;
-    cout << "Enter number of students: ";
-    cin >> n;
-    Student s1[100], s2[100];
+    cout << "\nNew roll number list in order of highest marks:\n";
     for (int i = 0; i < n; i++) {
-        s1[i].id = i + 1;
-        cout << "Enter marks for student " << i + 1 << ": ";
-        cin >> s1[i].marks;
-        s2[i] = s1[i];
+        students[i].rollno = i+1;
+        cout << "Roll No: " << students[i].rollno << ". "  << students[i].name << " - Marks: " << students[i].marks << "\n";
+    }
+}
+
+int main(){
+    int n;
+    cout << "Enter the number of students: ";
+    cin >> n;
+    vector<Student> students(n);
+
+    cout << "Enter student details: \n";
+    for(int i = 0; i < n; i++){
+        cout << "For student " << i + 1 << ":\n";
+        cout << "Name: ";
+        cin >> students[i].name;
+        cout << "Marks: ";
+        cin >> students[i].marks;
     }
 
-    cout << "\nBubble Sort (Descending):\n";
-    bubbleSort(s1, n);
-    
-    cout << "\nSelection Sort (Descending):\n";
-    selectionSort(s2, n);
-
-    cout << "\nRoll No Assignment:\n";
-    for(int i=0; i<n; i++) {
-        s1[i].rollNo = i + 1;
-        cout << "Rank " << s1[i].rollNo << ": Marks " << s1[i].marks << endl;
-    }
+    bubbleSort(students, n);
 
     return 0;
 }
-// Bubble and selection sort comparison for roll number assignment | Time: O(n²)
+// Bubble sort to assign roll numbers based on highest marks (descending) | Time: O(n²) | Space: O(1)

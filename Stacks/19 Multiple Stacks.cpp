@@ -1,98 +1,85 @@
 #include <iostream>
 using namespace std;
 
-class MultiStack {
-    int *arr;
-    int *top;
-    int *next;
-    int n, k;
-    int free;
+const int SIZE = 10;
+int arr[100];
+int first1 = -1;
+int first2 = SIZE;
 
-public:
-    MultiStack(int k1, int n1) {
-        k = k1; n = n1;
-        arr = new int[n];
-        top = new int[k];
-        next = new int[n];
-        free = 0;
-        for (int i = 0; i < k; i++) top[i] = -1;
-        for (int i = 0; i < n - 1; i++) next[i] = i + 1;
-        next[n - 1] = -1;
+void push1(){
+    if (first1 + 1 == first2) {
+        cout << "\nError: Stack Overflow!!" << endl;
+    } else {
+        int val;
+        cout << "\nEnter a number to add to stack 1: ";
+        cin >> val;
+        arr[++first1] = val;
     }
+}
 
-    void push(int item, int sn) {
-        if (free == -1) {
-            cout << "Stack Overflow\n";
-            return;
-        }
-        int i = free;
-        free = next[i];
-        next[i] = top[sn];
-        top[sn] = i;
-        arr[i] = item;
+void push2(){
+    if (first2 - 1 == first1) {
+        cout << "\nError: Stack Overflow!!" << endl;
+    } else {
+        int val;
+        cout << "\nEnter a number to add to stack 2: ";
+        cin >> val;
+        arr[--first2] = val;
     }
+}
 
-    int pop(int sn) {
-        if (top[sn] == -1) {
-            cout << "Stack Underflow\n";
-            return -1;
-        }
-        int i = top[sn];
-        top[sn] = next[i];
-        next[i] = free;
-        free = i;
-        return arr[i];
+void pop1(){
+    if (first1 == -1) {
+        cout << "\nError: Stack Underflow!!" << endl;
+    } else {
+        cout << "\nNumber popped from stack 1: " << arr[first1--] << endl;
     }
+}
 
-    void display(int sn) {
-        int i = top[sn];
-        while (i != -1) {
-            cout << arr[i] << " ";
-            i = next[i];
-        }
-        cout << endl;
+void pop2(){
+    if (first2 == SIZE) {
+        cout << "\nError: Stack Underflow!!" << endl;
+    } else {
+        cout << "\nNumber popped from stack 2: " << arr[first2++] << endl;
     }
-};
+}
+
+void display(){
+    cout << "\nStack 1: ";
+    if (first1 == -1) cout << "Empty";
+    for (int i = 0; i <= first1; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << "\nStack 2: ";
+    if (first2 == SIZE) cout << "Empty";
+    for (int i = SIZE - 1; i >= first2; i--) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
 
 int main() {
-    int k, n, choice, item, stackNum;
-    
-    cout << "Enter number of stacks: ";
-    cin >> k;
-    cout << "Enter total array size: ";
-    cin >> n;
-    
-    MultiStack ms(k, n);
-    
-    while (true) {
-        cout << "\n1. Push\n2. Pop\n3. Display Stack\n4. Exit\n";
-        cout << "Enter choice: ";
+    int choice;
+    do {
+        cout << "\n=== Multi-Stack Menu ===" << endl;
+        cout << "1. Push Stack 1" << endl;
+        cout << "2. Push Stack 2" << endl;
+        cout << "3. Pop Stack 1" << endl;
+        cout << "4. Pop Stack 2" << endl;
+        cout << "5. Display Both Stacks" << endl;
+        cout << "6. Exit" << endl;
+        cout << "Enter your choice: ";
         cin >> choice;
-        
-        if (choice == 1) {
-            cout << "Enter stack number (0-" << k-1 << "): ";
-            cin >> stackNum;
-            cout << "Enter item: ";
-            cin >> item;
-            ms.push(item, stackNum);
-        } else if (choice == 2) {
-            cout << "Enter stack number (0-" << k-1 << "): ";
-            cin >> stackNum;
-            item = ms.pop(stackNum);
-            if (item != -1) {
-                cout << "Popped: " << item << endl;
-            }
-        } else if (choice == 3) {
-            cout << "Enter stack number (0-" << k-1 << "): ";
-            cin >> stackNum;
-            cout << "Stack " << stackNum << ": ";
-            ms.display(stackNum);
-        } else if (choice == 4) {
-            break;
-        } else {
-            cout << "Invalid choice!\n";
+        switch(choice) {
+            case 1: push1(); break;
+            case 2: push2(); break;
+            case 3: pop1(); break;
+            case 4: pop2(); break;
+            case 5: display(); break;
+            case 6: cout << "Exiting..." << endl; break;
+            default: cout << "Invalid choice!" << endl;
         }
-    }
+    } while(choice != 6);
     return 0;
 }
-// Multiple stacks in single array using next-free array technique | Time: O(1)
+// Two stacks in single array with opposite growth directions | Operations: push, pop, overflow, underflow, display | Time: O(1) | Space: O(n)

@@ -1,82 +1,140 @@
 #include <iostream>
-#include <string>
 using namespace std;
 
-class PassengerQueue {
-    string *q;
-    int front, rear, maxSize;
-public:
-    PassengerQueue(int size) {
-        maxSize = size;
-        q = new string[maxSize];
-        front = -1;
-        rear = -1;
-    }
+typedef struct SLL{
+    int passenger_id;
+    struct SLL *next;
+} *node;
 
-    void insert(string name) {
-        if (rear == maxSize - 1) {
-            cout << "Queue Full!\n";
-            return;
-        }
-        if (front == -1) {
-            front = 0;
-        }
-        q[++rear] = name;
-        cout << "Passenger " << name << " added.\n";
-    }
+node front = NULL;
+node rear = NULL;
+int current_passenger = 1;
 
-    void remove() {
-        if (front == -1 || front > rear) {
-            cout << "Queue Empty!\n";
-            return;
-        }
-        cout << "Removed: " << q[front++] << endl;
-    }
-
-    void displayFront() {
-        if (front == -1 || front > rear) {
-            cout << "Empty\n";
-        } else {
-            cout << "Front: " << q[front] << endl;
-        }
-    }
-
-    int count() {
-        if (front == -1 || front > rear) {
-            return 0;
-        }
-        return rear - front + 1;
-    }
-};
-
-int main() {
-    int size, choice;
-    string name;
+node accept(){
+    node a  = new SLL;
+    a->passenger_id = current_passenger++;
     
-    cout << "Enter queue size: ";
-    cin >> size;
-    PassengerQueue pq(size);
-    
-    while (true) {
-        cout << "\n1. Insert\n2. Remove\n3. Display Front\n4. Exit\n";
-        cout << "Enter choice: ";
-        cin >> choice;
-        
-        if (choice == 1) {
-            cout << "Enter passenger name: ";
-            cin >> name;
-            pq.insert(name);
-        } else if (choice == 2) {
-            pq.remove();
-        } else if (choice == 3) {
-            pq.displayFront();
-        } else if (choice == 4) {
-            break;
-        } else {
-            cout << "Invalid choice!\n";
-        }
+    a->next = NULL;
+    return a;
+}
+
+void addpassenger(){
+    node newnode = accept();
+    if(front == NULL){
+        front = newnode;
+        rear = newnode;
     }
-    cout << "Passengers left: " << pq.count() << endl;
+    else {
+        rear->next = newnode;
+        rear = newnode;
+    }
+
+    cout << "\nPassenger added! Passenger #" << newnode->passenger_id << " is now in the queue.";
+}
+
+void removepassenger(){
+    if(front == NULL){
+        cout << "\nThere are no passengers waiting!";
+        return;
+    }
+
+    node temp = front;
+    int dequeuedValue = temp->passenger_id;
+    front = front->next;
+
+    if(front == NULL){
+        rear = NULL;
+    }
+
+    delete temp;
+    cout << "\nPassenger #" << dequeuedValue << " has been served and removed.";
+}
+
+void displayfront(){
+    if(front == NULL){
+        cout << "\nNo passengers in queue!";
+        return;
+    }
+    
+    cout << "\nPassenger at the front of the queue: Passenger #" << front->passenger_id;
+}
+
+void display(){
+    if(front == NULL){
+        cout << "\nNo passengers in queue!";
+        return;
+    }
+    
+    node temp = front;
+    cout << "\nCurrent queue of passengers waiting: ";
+    while(temp != NULL){
+        cout << "P#" << temp->passenger_id;
+        if(temp->next != NULL){
+            cout << " <- ";
+        }
+        temp = temp->next;
+    }
+    cout << "\n";
+}
+
+int countpassengers(){
+    int count = 0;
+    node temp = front;
+    while(temp != NULL){
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+int main(){
+    int c;
+    
+    cout << "=== TICKET AGENT QUEUE SYSTEM ===\n";
+    cout << "Passengers will be served on first-come, first-served basis\n";
+
+    do{
+        cout << "\n\n========== MENU ==========\n";
+        cout << "1. Add a passenger to queue\n";
+        cout << "2. Display front passenger\n";
+        cout << "3. Serve front passenger (remove)\n";
+        cout << "4. Display entire queue\n";
+        cout << "5. Exit\n";
+        cout << "=========================\n";
+        cout << "Your choice: ";
+        cin >> c;
+
+        switch(c){
+            case 1: 
+                addpassenger();
+                break;
+            
+            case 2:
+                displayfront();
+                break;
+
+            case 3:
+                removepassenger();
+                break;
+
+            case 4:
+                display();
+                break;
+
+            case 5:
+                {
+                    int remaining = countpassengers();
+                    cout << "\nExiting the system.";
+                    cout << "\nNumber of passengers left in queue: " << remaining;
+                    cout << "\nThanks for using the ticket system!";
+                    break;
+                }
+
+            default: 
+                cout << "\nInvalid input.";
+        }
+    } while (c != 5);
+
     return 0;
 }
-// Linear queue for passenger ticket management | Time: O(1)
+// Queue using linked list for passenger ticketing system | Operations: book ticket, cancel, display queue | Time: O(1) | Space: O(n)

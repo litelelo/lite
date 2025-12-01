@@ -1,51 +1,98 @@
 #include <iostream>
-#include <string>
+#include <vector>
+#include <cstdlib>
 using namespace std;
 
-struct Student {
-    int rollNo;
-    string name;
-    string division;
-    string year;
+class Student{
+    char name[50];
+    int rollno;
+
+    public:
+    void getdata();
+    void printdata();
+    int checkroll();
+    string checkname();
+    void sortStudents(vector<Student>& students, int n);
 };
 
-int main() {
-    int n;
-    cout << "Enter number of students: ";
-    cin >> n;
+void Student::getdata(){
+    cout << " Roll No: ";
+    cin >> rollno;
+    cout << " Name: ";
+    cin >> name;
+}
 
-    Student students[100];
-    for (int i = 0; i < n; i++) {
-        cout << "Enter details for student " << i + 1 << " (RollNo Name Division Year): ";
-        cin >> students[i].rollNo >> students[i].name >> students[i].division >> students[i].year;
+int Student::checkroll(){
+    return rollno;
+}
+
+string Student::checkname(){
+    return string(name);
+}
+
+void Student::printdata(){
+    cout << " Name: " << name << "\n";
+    cout << " Roll No: " << rollno << "\n";
+}
+
+void Student::sortStudents(vector<Student>& students, int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (students[j].checkroll() > students[j + 1].checkroll()) {
+                Student temp = students[j];
+                students[j] = students[j + 1];
+                students[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main(){
+    system("cls");
+    int n;
+    cout << "Enter the number of students: ";
+    cin >> n;
+    vector<Student> students(n);
+
+    cout << "Enter student details: \n";
+    for(int i = 0; i<n; i++){
+        cout << " For student " << i+1 << ":\n";
+        students[i].getdata();
     }
 
-    int searchRoll;
-    string searchName, searchDiv, searchYear;
-    
-    cout << "Enter Roll No to search: ";
-    cin >> searchRoll;
-    cout << "Enter Name to search: ";
+    char searchName[50];
+    int searchRollNo;
+    cout << "\nEnter details of student to search: \n";
+    cout << " Roll No: ";
+    cin >> searchRollNo;
+    cout << " Name: ";
     cin >> searchName;
-    cout << "Enter Division to search: ";
-    cin >> searchDiv;
-    cout << "Enter Year to search: ";
-    cin >> searchYear;
+
+    int low = 0, high = n - 1;
+    int mid;
 
     bool found = false;
-    for (int i = 0; i < n; i++) {
-        if (students[i].rollNo == searchRoll && students[i].name == searchName && 
-            students[i].division == searchDiv && students[i].year == searchYear) {
-            cout << "Student found at index " << i << endl;
+   
+    while(low<=high){
+        mid = (low + high) / 2;
+        if(students[mid].checkroll() == searchRollNo && students[mid].checkname() == string(searchName)){
             found = true;
+            cout << "\nStudent found:\n";
+            students[mid].printdata();
             break;
+        }
+        else if(students[mid].checkroll() < searchRollNo){
+            low = mid + 1;
+        }
+        else{
+            high = mid - 1;
         }
     }
 
-    if (!found) {
-        cout << "Student not found." << endl;
+    if(!found){
+        cout << "Student not found.\n";
     }
 
     return 0;
 }
-// Linear search for student by multiple attributes | Time: O(n)
+// Binary search to find student by roll number and name | Time: O(log n) | Space: O(1)

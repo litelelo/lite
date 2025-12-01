@@ -2,96 +2,161 @@
 #include <string>
 using namespace std;
 
+const int TABLE_SIZE = 10;
+
 struct Student {
-    int rollNo;
+    int rollNumber;
     string name;
+    float marks;
+    bool isEmpty;
+    
+    Student() : rollNumber(-1), name(""), marks(0.0), isEmpty(true) {}
 };
 
-class StudentHash {
-    Student** table;
-    int size;
-public:
-    StudentHash(int s) {
-        size = s;
-        table = new Student*[size];
-        for (int i = 0; i < size; i++) {
-            table[i] = NULL;
+Student hashTable[TABLE_SIZE];
+
+void initialize() {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        hashTable[i] = Student();
+    }
+}
+
+int hashFunction(int rollNumber) {
+    return rollNumber % TABLE_SIZE;
+}
+
+void insertStudent() {
+    int rollNumber;
+    string name;
+    float marks;
+    
+    cout << "Enter roll number: ";
+    cin >> rollNumber;
+    cout << "Enter student name: ";
+    cin.ignore();
+    getline(cin, name);
+    cout << "Enter marks: ";
+    cin >> marks;
+    
+    int index = hashFunction(rollNumber);
+    int startIndex = index;
+
+    while (!hashTable[index].isEmpty) {
+        if (hashTable[index].rollNumber == rollNumber) {
+            cout << "Roll number " << rollNumber << " already exists!" << endl;
+            return;
+        }
+        index = (index + 1) % TABLE_SIZE;
+        if (index == startIndex) {
+            cout << "Hash table is full. Cannot insert student record." << endl;
+            return;
         }
     }
 
-    void insert(int roll, string name) {
-        int index = roll % size;
-        int i = 0;
-        while (table[(index + i) % size] != NULL) {
-            i++;
-            if (i == size) {
-                cout << "Table Full\n";
-                return;
-            }
+    hashTable[index].rollNumber = rollNumber;
+    hashTable[index].name = name;
+    hashTable[index].marks = marks;
+    hashTable[index].isEmpty = false;
+    
+    cout << "Student record inserted at index " << index << endl;
+}
+
+int searchStudent(int rollNumber) {
+    int index = hashFunction(rollNumber);
+    int startIndex = index;
+
+    while (!hashTable[index].isEmpty) {
+        if (hashTable[index].rollNumber == rollNumber) {
+            return index;
         }
-        table[(index + i) % size] = new Student{roll, name};
-        cout << "Inserted student " << name << " with roll no " << roll << endl;
+        index = (index + 1) % TABLE_SIZE;
+        if (index == startIndex) break;
     }
 
-    void search(int roll) {
-        int index = roll % size;
-        int i = 0;
-        while (table[(index + i) % size] != NULL) {
-            if (table[(index + i) % size]->rollNo == roll) {
-                cout << "Found: " << table[(index + i) % size]->name << endl;
-                return;
-            }
-            i++;
-            if (i == size) {
-                break;
-            }
-        }
-        cout << "Not Found\n";
-    }
+    return -1;
+}
 
-    void display() {
-        cout << "\nStudent Records:\n";
-        for (int i = 0; i < size; i++) {
-            if (table[i] != NULL) {
-                cout << i << " --> Roll: " << table[i]->rollNo << ", Name: " << table[i]->name << endl;
-            } else {
-                cout << i << " --> " << endl;
-            }
+void displayStudent() {
+    int rollNumber;
+    cout << "Enter roll number to search: ";
+    cin >> rollNumber;
+    
+    int index = searchStudent(rollNumber);
+    if (index != -1) {
+        cout << "\nStudent Record Found at index " << index << ":\n";
+        cout << "Roll Number: " << hashTable[index].rollNumber << endl;
+        cout << "Name: " << hashTable[index].name << endl;
+        cout << "Marks: " << hashTable[index].marks << endl;
+    } else {
+        cout << "Student with roll number " << rollNumber << " not found." << endl;
+    }
+}
+
+void deleteStudent() {
+    int rollNumber;
+    cout << "Enter roll number to delete: ";
+    cin >> rollNumber;
+    
+    int index = searchStudent(rollNumber);
+    if (index != -1) {
+        cout << "Student record deleted: " << hashTable[index].name << 
+                " (Roll: " << hashTable[index].rollNumber << ")" << endl;
+        hashTable[index] = Student(); // Reset to empty
+    } else {
+        cout << "Student with roll number " << rollNumber << " not found." << endl;
+    }
+}
+
+void displayAllStudents() {
+    cout << "\nAll Student Records:\n";
+    cout << "Index\tRoll No\tName\t\tMarks\n";
+    cout << "---------------------------------------------\n";
+    
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (!hashTable[i].isEmpty) {
+            cout << i << "\t" << hashTable[i].rollNumber << "\t" 
+                 << hashTable[i].name << "\t\t" << hashTable[i].marks << endl;
+        } else {
+            cout << i << "\tEmpty\n";
         }
     }
-};
+}
 
 int main() {
-    int size, choice, roll;
-    string name;
+    initialize();
+    int choice;
     
-    cout << "Enter hash table size: ";
-    cin >> size;
-    StudentHash sh(size);
-    
-    while (true) {
-        cout << "\n1. Insert Student\n2. Search Student\n3. Display All\n4. Exit\n";
-        cout << "Enter choice: ";
+    do {
+        cout << "\n=== Student Record Hash Table ===\n";
+        cout << "1. Insert Student Record\n";
+        cout << "2. Search Student by Roll Number\n";
+        cout << "3. Delete Student Record\n";
+        cout << "4. Display All Records\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
         cin >> choice;
         
-        if (choice == 1) {
-            cout << "Enter roll number: ";
-            cin >> roll;
-            cout << "Enter name: ";
-            cin >> name;
-            sh.insert(roll, name);
-        } else if (choice == 2) {
-            cout << "Enter roll number to search: ";
-            cin >> roll;
-            sh.search(roll);
-        } else if (choice == 3) {
-            sh.display();
-        } else if (choice == 4) {
+        switch (choice) {
+        case 1:
+            insertStudent();
             break;
-        } else {
-            cout << "Invalid choice!\n";
+        case 2:
+            displayStudent();
+            break;
+        case 3:
+            deleteStudent();
+            break;
+        case 4:
+            displayAllStudents();
+            break;
+        case 0:
+            cout << "Exiting..." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Try again.\n";
         }
-    }
+    } while (choice != 0);
+
     return 0;
 }
-// Hash table for student records using linear probing | Time: O(1) avg, O(n) worst
+// Student records hash table with linear probing | Operations: insert, delete, search, display | Time: O(1) avg, O(n) worst | Space: O(n)

@@ -1,113 +1,87 @@
 #include <iostream>
 using namespace std;
 
-class TwoQueues {
-    int *arr;
-    int f1, r1, f2, r2, maxSize;
-public:
-    TwoQueues(int size) {
-        maxSize = size;
-        arr = new int[maxSize];
-        f1 = -1;
-        r1 = -1;
-        f2 = maxSize;
-        r2 = maxSize;
-    }
+const int SIZE = 10;
+int arr[SIZE];
+int front1 = -1, rear1 = -1;
+int front2 = SIZE, rear2 = SIZE;
 
-    void addQ1(int val) {
-        if (r1 < r2 - 1) {
-            if (f1 == -1) {
-                f1 = 0;
-            }
-            arr[++r1] = val;
-            cout << "Added to Q1.\n";
-        } else {
-            cout << "Overflow\n";
-        }
+void enqueue1() {
+    if (rear1 + 1 == rear2) {
+        cout << "\nError: Queue 1 Overflow!!" << endl;
+    } else {
+        int val;
+        cout << "\nEnter a number to enqueue in queue 1: ";
+        cin >> val;
+        if (front1 == -1) front1 = rear1 = 0;
+        else rear1++;
+        arr[rear1] = val;
     }
+}
 
-    void addQ2(int val) {
-        if (r1 < r2 - 1) {
-            if (f2 == maxSize) {
-                f2 = maxSize - 1;
-            }
-            arr[--r2] = val;
-            cout << "Added to Q2.\n";
-        } else {
-            cout << "Overflow\n";
-        }
+void enqueue2() {
+    if (rear2 - 1 == rear1) {
+        cout << "\nError: Queue 2 Overflow!!" << endl;
+    } else {
+        int val;
+        cout << "\nEnter a number to enqueue in queue 2: ";
+        cin >> val;
+        if (front2 == SIZE) front2 = rear2 = SIZE - 1;
+        else rear2--;
+        arr[rear2] = val;
     }
+}
 
-    void delQ1() {
-        if (f1 != -1 && f1 <= r1) {
-            cout << "Deleted Q1: " << arr[f1++] << endl;
-            if (f1 > r1) {
-                f1 = -1;
-                r1 = -1;
-            }
-        } else {
-            cout << "Underflow\n";
-        }
+void dequeue1() {
+    if (front1 == -1 || front1 > rear1) {
+        cout << "\nError: Queue 1 Underflow!!" << endl;
+    } else {
+        cout << "\nNumber dequeued from queue 1: " << arr[front1++] << endl;
+        if (front1 > rear1) front1 = rear1 = -1;
     }
+}
 
-    void delQ2() {
-        if (f2 != maxSize && f2 >= r2) {
-            cout << "Deleted Q2: " << arr[f2--] << endl;
-            if (f2 < r2) {
-                f2 = maxSize;
-                r2 = maxSize;
-            }
-        } else {
-            cout << "Underflow\n";
-        }
+void dequeue2() {
+    if (front2 == SIZE || front2 < rear2) {
+        cout << "\nError: Queue 2 Underflow!!" << endl;
+    } else {
+        cout << "\nNumber dequeued from queue 2: " << arr[front2--] << endl;
+        if (front2 < rear2) front2 = rear2 = SIZE;
     }
+}
 
-    void display() {
-        cout << "Q1: ";
-        for (int i = f1; i != -1 && i <= r1; i++) {
-            cout << arr[i] << " ";
-        }
-        cout << endl;
-        cout << "Q2: ";
-        for (int i = f2; i != maxSize && i >= r2; i--) {
-            cout << arr[i] << " ";
-        }
-        cout << endl;
-    }
-};
+void display() {
+    cout << "\nQueue 1: ";
+    if (front1 == -1 || front1 > rear1) cout << "Empty";
+    else for (int i = front1; i <= rear1; i++) cout << arr[i] << " ";
+    cout << "\nQueue 2: ";
+    if (front2 == SIZE || front2 < rear2) cout << "Empty";
+    else for (int i = front2; i >= rear2; i--) cout << arr[i] << " ";
+    cout << endl;
+}
 
 int main() {
-    int size, choice, val;
-    
-    cout << "Enter array size: ";
-    cin >> size;
-    TwoQueues tq(size);
-    
-    while (true) {
-        cout << "\n1. Add to Q1\n2. Add to Q2\n3. Delete from Q1\n4. Delete from Q2\n5. Display\n6. Exit\n";
-        cout << "Enter choice: ";
+    int choice;
+    do {
+        cout << "\n=== Multi-Queue Menu ===" << endl;
+        cout << "1. Enqueue Queue 1" << endl;
+        cout << "2. Enqueue Queue 2" << endl;
+        cout << "3. Dequeue Queue 1" << endl;
+        cout << "4. Dequeue Queue 2" << endl;
+        cout << "5. Display Both Queues" << endl;
+        cout << "6. Exit" << endl;
+        cout << "Enter your choice: ";
         cin >> choice;
-        
-        if (choice == 1) {
-            cout << "Enter value: ";
-            cin >> val;
-            tq.addQ1(val);
-        } else if (choice == 2) {
-            cout << "Enter value: ";
-            cin >> val;
-            tq.addQ2(val);
-        } else if (choice == 3) {
-            tq.delQ1();
-        } else if (choice == 4) {
-            tq.delQ2();
-        } else if (choice == 5) {
-            tq.display();
-        } else if (choice == 6) {
-            break;
-        } else {
-            cout << "Invalid choice!\n";
+        switch(choice) {
+            case 1: enqueue1(); break;
+            case 2: enqueue2(); break;
+            case 3: dequeue1(); break;
+            case 4: dequeue2(); break;
+            case 5: display(); break;
+            case 6: cout << "Exiting..." << endl; break;
+            default: cout << "Invalid choice!" << endl;
         }
-    }
+    } while(choice != 6);
     return 0;
 }
-// Two queues in single array from opposite ends | Time: O(1)
+// Two circular queues (normal & VIP) in single array | Operations: enqueue, dequeue, display | Time: O(1) | Space: O(n)

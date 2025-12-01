@@ -1,85 +1,218 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
-struct Node {
+typedef struct DLL{
     int bit;
-    Node* next;
-    Node* prev;
-};
+    struct DLL *next;
+    struct DLL *prev;
+} *node;
 
-class BinaryNumber {
-    Node* head;
-    Node* tail;
-public:
-    BinaryNumber() { head = NULL; tail = NULL; }
+node first = NULL;
+node first2 = NULL;
 
-    void addBit(int b) {
-        Node* newNode = new Node{b, NULL, tail};
-        if (tail) tail->next = newNode;
-        else head = newNode;
-        tail = newNode;
-    }
+node accept(){
+    node a = new DLL;
+    do{
+        cout << "\nEnter a bit: ";
+        cin >> a->bit;
 
-    void display() {
-        Node* temp = head;
-        while (temp) {
-            cout << temp->bit;
-            temp = temp->next;
+        if(!(a->bit == 1 || a->bit == 0)){
+            cout << "Invalid input.";
         }
-        cout << endl;
-    }
+    } while(!(a->bit == 1 || a->bit == 0));
+    a->next = NULL;
+    a->prev = NULL;
 
-    void onesComplement() {
-        cout << "1's Complement: ";
-        Node* temp = head;
-        while (temp) {
-            cout << (temp->bit == 0 ? 1 : 0);
-            temp = temp->next;
-        }
-        cout << endl;
-    }
-
-    void twosComplement() {
-        cout << "2's Complement: ";
-        // Copy bits to array or new list to manipulate
-        // Or traverse from tail
-        Node* temp = tail;
-        int carry = 1;
-        int res[100], i = 0;
-        
-        while (temp) {
-            int val = (temp->bit == 0 ? 1 : 0) + carry;
-            if (val == 2) {
-                res[i++] = 0;
-                carry = 1;
-            } else {
-                res[i++] = val;
-                carry = 0;
-            }
-            temp = temp->prev;
-        }
-        if (carry) res[i++] = 1;
-        
-        for (int j = i - 1; j >= 0; j--) cout << res[j];
-        cout << endl;
-    }
-};
-
-int main() {
-    BinaryNumber bn;
-    int n, bit;
-    cout << "Enter number of bits: ";
-    cin >> n;
-    cout << "Enter bits: ";
-    for (int i = 0; i < n; i++) {
-        cin >> bit;
-        bn.addBit(bit);
-    }
-
-    cout << "Original: "; bn.display();
-    bn.onesComplement();
-    bn.twosComplement();
-
-    return 0;
+    return a;
 }
-// Doubly linked list for binary number with 1's and 2's complement | Time: O(n)
+
+void addbit(node &f){
+    node newnode = accept();
+
+    if(f == NULL){
+        f = newnode;
+    }
+    else{
+        node temp = f;
+        while(temp->next != NULL){
+            temp = temp->next;
+        }
+
+        temp->next = newnode;
+        newnode->prev = temp;
+    }
+        
+    cout << "Bit added.";
+}
+
+void display(node &f){
+    if(f == NULL){
+        cout << "\nNo bits entered yet.";
+        return;
+    }
+
+    node temp = f;
+    while(temp != NULL){
+        cout << temp->bit << " ";
+        temp = temp->next;
+    }
+}
+
+void complement(){
+    if(first == NULL){
+        cout << "\nNo bits to complement.";
+        return;
+    }
+
+    node temp = first;
+    cout << "\nOne's complement is: \n";
+    while(temp != NULL){
+        int tempbit = temp->bit == 0 ? 1 : 0;
+        cout << tempbit << " ";
+        temp = temp->next;
+    }
+
+    cout << "\nTwo's complement is: \n";
+
+    node tail = first;
+    while(tail->next != NULL){
+        tail = tail->next;
+    }
+    
+    int carry = 1;  
+    node current = tail;
+    
+    int size = 0;    
+    temp = first;
+    while(temp != NULL){
+        size++;
+        temp = temp->next;
+    }
+    vector<int> result(size);
+    
+    for(int i = size-1; i >= 0; i--){
+        int flippedBit = (current->bit == 0) ? 1 : 0;  
+        int sum = flippedBit + carry;                  
+        
+        result[i] = sum % 2;                           
+        carry = sum / 2;                               
+        
+        current = current->prev;                       
+    }
+
+    for(int i = 0; i < size; i++){
+        cout << result[i] << " ";
+    }
+}
+
+void addition(){
+    if(first == NULL || first2 == NULL){
+        cout << "\nBoth binary numbers must be entered first.";
+        return;
+    }
+    
+    // Find tails of both numbers
+    node tail1 = first;
+    while(tail1->next != NULL){
+        tail1 = tail1->next;
+    }
+    
+    node tail2 = first2;
+    while(tail2->next != NULL){
+        tail2 = tail2->next;
+    }
+
+    int size1 = 0, size2 = 0;
+    node temp = first;
+    while(temp != NULL){
+        size1++;
+        temp = temp->next;
+    }
+    
+    temp = first2;
+    while(temp != NULL){
+        size2++;
+        temp = temp->next;
+    }
+    
+    int maxSize = (size1 > size2) ? size1 : size2;
+    vector<int> result(maxSize + 1, 0);
+    
+    int carry = 0;
+    node current1 = tail1;
+    node current2 = tail2;
+    int pos = maxSize; 
+    
+    while(current1 != NULL || current2 != NULL || carry > 0){
+        int bit1 = (current1 != NULL) ? current1->bit : 0;
+        int bit2 = (current2 != NULL) ? current2->bit : 0;
+        
+        int sum = bit1 + bit2 + carry;
+        result[pos] = sum % 2;
+        carry = sum / 2;
+        
+        if(current1 != NULL) current1 = current1->prev;
+        if(current2 != NULL) current2 = current2->prev;
+        pos--;
+    }
+    
+    cout << "\nSum is: ";
+    bool started = false;
+    for(int i = 0; i <= maxSize; i++){
+        if(result[i] == 1) started = true;
+        if(started) cout << result[i] << " ";
+    }
+    if(!started) cout << "0 ";  // Handle case where sum is 0
+}
+
+int main(){
+    int c;
+
+    do{
+        cout << "\n\nWhat operation would you like to perform:\n 1. Add a bit\n 2. Display binary number\n 3. Display one's and two's complement\n 4. Add two binary numbers\n 5. Exit\nYour choice: ";
+        cin >> c;
+
+        switch(c){
+            case 1:
+                addbit(first);
+                break;
+            
+            case 2:
+                display(first);
+                break;
+
+            case 3:
+                complement();
+                break;
+            
+            case 4:
+                cout << "\nEnter second binary number: \n";
+                while(first2 != NULL){
+                    node temp = first2;
+                    first2 = first2->next;
+                    delete temp;
+                }
+                first2 = NULL;
+                
+                int numBits;
+                cout << "How many bits for second number? ";
+                cin >> numBits;
+                
+                for(int i = 0; i < numBits; i++){
+                    addbit(first2);
+                }
+                
+                cout << "\nThe first number: ";
+                display(first);
+                cout << "\nThe second number: ";
+                display(first2);
+                
+                addition();
+                break;
+
+            default: cout << "\nInvalid input.";
+        }
+    } while(c != 5);
+}
+// Doubly linked list to store binary number with 1's complement, 2's complement, and binary addition | Time: O(n) where n is number of bits

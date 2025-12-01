@@ -1,72 +1,140 @@
 #include <iostream>
-#include <string>
+#include <vector>
 using namespace std;
 
-struct Employee {
+class Employee{
     string name;
     float height;
     float weight;
     float avg;
+
+    public:
+    void accept();
+    float getavg();
+    void display();
 };
 
-void merge(Employee arr[], int l, int m, int r) {
-    int n1 = m - l + 1;
-    int n2 = r - m;
-    Employee L[50], R[50];
+void Employee::accept(){
+    cout << "\tEnter employee name: ";
+    cin >> name;
+    cout << "\tEnter height: ";
+    cin >> height;
+    cout << "\tEnter weight: ";
+    cin >> weight;
+}
 
-    for (int i = 0; i < n1; i++) L[i] = arr[l + i];
-    for (int j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
+float Employee::getavg(){
+    return (height + weight) / 2;
+}
 
-    int i = 0, j = 0, k = l;
-    while (i < n1 && j < n2) {
-        if (L[i].avg <= R[j].avg) {
-            arr[k] = L[i];
+void Employee::display(){
+    cout << name << " - Avg: " << getavg() << " (Height: " << height << ", Weight: " << weight << ")\n";
+}
+
+void merge(vector<Employee>& employees, int left, int mid, int right){
+    int n1 = mid - left +1;
+    int n2 = right - mid;
+
+    vector<Employee> leftarr(n1);
+    vector<Employee> rightarr(n2);
+
+    for (int i = 0; i<n1; i++){
+        leftarr[i] = employees[left+i];
+    }
+
+    for (int j = 0; j<n2; j++){
+        rightarr[j] = employees[mid+1+j];
+    }
+
+    int i = 0, j = 0, k = left;
+
+    while(i<n1 && j<n2){
+        if(leftarr[i].getavg() < rightarr[j].getavg()){
+            employees[k] = leftarr[i];
             i++;
         } else {
-            arr[k] = R[j];
+            employees[k] = rightarr[j];
             j++;
         }
         k++;
     }
-    while (i < n1) {
-        arr[k] = L[i];
+
+    while(i < n1){
+        employees[k] = leftarr[i];
         i++;
         k++;
     }
-    while (j < n2) {
-        arr[k] = R[j];
+
+    while(j < n2){
+        employees[k] = rightarr[j];
         j++;
         k++;
     }
 }
 
-void mergeSort(Employee arr[], int l, int r) {
-    if (l < r) {
-        int m = l + (r - l) / 2;
-        mergeSort(arr, l, m);
-        mergeSort(arr, m + 1, r);
-        merge(arr, l, m, r);
+void mergeSort(vector<Employee>& employees, int left, int right){
+    if (left>=right){
+        return;
+    }
+
+    int mid = (left+right)/2;
+    mergeSort(employees, left, mid);
+    mergeSort(employees, mid+1, right);
+    merge(employees, left, mid, right);
+}
+
+void selectionSort(vector<Employee>& employees, int n){
+    for (int i = 0; i<n; i++){
+        int min = i;
+        for(int j = i+1; j<n; j++){
+            if(employees[j].getavg() < employees[min].getavg()){
+                min = j;
+            }
+        }
+
+        if (min != i){
+            Employee temp = employees[i];
+            employees[i] = employees[min];
+            employees[min] = temp;
+        }
     }
 }
 
-int main() {
+int main(){
     int n;
-    cout << "Enter number of employees: ";
+    cout << "Enter the number of employees: ";
     cin >> n;
-    Employee emp[100];
-    for (int i = 0; i < n; i++) {
-        cout << "Enter Name, Height, Weight for employee " << i + 1 << ": ";
-        cin >> emp[i].name >> emp[i].height >> emp[i].weight;
-        emp[i].avg = (emp[i].height + emp[i].weight) / 2.0;
+
+    vector<Employee> employees(n);
+    cout << "Enter employee details:\n";
+    for(int i = 0; i < n; i++){
+        cout << " For employee " << i + 1 << ":\n";
+        employees[i].accept();
     }
 
-    mergeSort(emp, 0, n - 1);
+    cout << "\nChoose sorting method:\n 1. Merge Sort\n 2. Selection Sort\nYour choice: ";
+    int choice;
+    cin >> choice;
 
-    cout << "\nSorted List based on Average of Height and Weight:\n";
-    for (int i = 0; i < n; i++) {
-        cout << emp[i].name << " - Avg: " << emp[i].avg << endl;
+    switch(choice){
+        case 1:
+            mergeSort(employees, 0, n-1);
+            cout << "\nMerge-sorted employee details (by average of height and weight):\n";
+            break;
+        case 2:
+            selectionSort(employees, n);
+            cout << "\nSelection-sorted employee details (by average of height and weight):\n";
+            break;
+        default:
+            cout << "Invalid choice!";
+            return 1;
+    }
+
+    for (int i = 0; i < n; i++){
+        cout << i+1 << ". ";
+        employees[i].display();
     }
 
     return 0;
 }
-// Merge sort on employee records by average height/weight | Time: O(n log n)
+// Merge sort and selection sort to arrange employees by avg(height, weight) | Time: Merge O(n log n), Selection O(n²) | Space: O(n)

@@ -1,81 +1,93 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
-void printArray(float arr[], int size) {
-    for (int i = 0; i < size; i++)
-        cout << arr[i] << " ";
-    cout << endl;
+struct Student {
+    char name[50];
+    int rollno;
+    float marks;
+};
+
+bool isDuplicateRollNo(const vector<Student>& students, int rollno, int currentIndex) {
+    for (int i = 0; i < currentIndex; i++) {
+        if (students[i].rollno == rollno) {
+            return true;
+        }
+    }
+    return false;
 }
 
-int partition(float arr[], int low, int high) {
-    float pivot = arr[high];
-    int i = (low - 1);
+void quickSort(vector<Student>& students, int low, int high, int& swaps) {
+    if (low >= high) return;
 
-    for (int j = low; j <= high - 1; j++) {
-        if (arr[j] < pivot) {
+    int pivot = students[high].marks;
+    int lt = low, gt = high, i = low;
+
+    while (i <= gt) {
+        if (students[i].marks < pivot) {
+            swap(students[lt], students[i]);
+            swaps++;
+            lt++; 
             i++;
-            float temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-        }
-    }
-    float temp = arr[i + 1];
-    arr[i + 1] = arr[high];
-    arr[high] = temp;
-    return (i + 1);
-}
-
-void quickSort(float arr[], int low, int high, int size) {
-    if (low < high) {
-        int pi = partition(arr, low, high);
-        cout << "Pivot placed at " << pi << ": ";
-        printArray(arr, size);
-        quickSort(arr, low, pi - 1, size);
-        quickSort(arr, pi + 1, high, size);
-    }
-}
-
-void findMinMax(float arr[], int low, int high, float &min, float &max) {
-    if (low == high) {
-        if (min > arr[low]) min = arr[low];
-        if (max < arr[low]) max = arr[low];
-        return;
-    }
-    if (high == low + 1) {
-        if (arr[low] > arr[high]) {
-            if (min > arr[high]) min = arr[high];
-            if (max < arr[low]) max = arr[low];
+        } else if (students[i].marks > pivot) {
+            swap(students[i], students[gt]);
+            swaps++;
+            gt--;
         } else {
-            if (min > arr[low]) min = arr[low];
-            if (max < arr[high]) max = arr[high];
+            i++;
         }
-        return;
     }
-    int mid = (low + high) / 2;
-    findMinMax(arr, low, mid, min, max);
-    findMinMax(arr, mid + 1, high, min, max);
+
+    quickSort(students, low, lt - 1, swaps);
+    quickSort(students, gt + 1, high, swaps);
 }
 
-int main() {
+int main(){
     int n;
-    cout << "Enter number of students: ";
+    cout << "Enter the number of students: ";
     cin >> n;
-    float marks[100];
-    cout << "Enter marks: ";
-    for (int i = 0; i < n; i++) cin >> marks[i];
+    vector<Student> students(n);
 
-    cout << "Initial array: ";
-    printArray(marks, n);
+    cout << "Enter student details: \n";
+    for(int i = 0; i < n; i++){
+        cout << "\nFor student " << i + 1 << ":\n";
+        int rollno;
+        while (true) {
+            cout << "Roll No: ";
+            cin >> rollno;
+            
+            if (rollno <= 0) {
+                cout << "Error: Roll number must be positive. Please try again.\n";
+                continue;
+            }
+            
+            if (isDuplicateRollNo(students, rollno, i)) {
+                cout << "Error: Roll number " << rollno << " already exists. Please enter a different roll number.\n";
+                continue;
+            }
+            
+            students[i].rollno = rollno;
+            break;
+        }
+        cout << "Name: ";
+        cin >> students[i].name;
+        cout << "Marks: ";
+        cin >> students[i].marks;
+    }
 
-    quickSort(marks, 0, n - 1, n);
+    int quickSortSwaps = 0;
+    quickSort(students, 0, n - 1, quickSortSwaps);
 
-    cout << "Sorted array: ";
-    printArray(marks, n);
-
-    float min = marks[0], max = marks[0];
-    findMinMax(marks, 0, n - 1, min, max);
-    cout << "Min: " << min << ", Max: " << max << endl;
+    cout << "\nSorted list of students by marks in ascending order:\n";
+    for (int i = 0; i < students.size(); i++) {
+        cout << students[i].rollno << ". " << students[i].name << " - Marks: " << students[i].marks << "\n";
+    }
+    
+    cout << "\nMinimum marks: " << students[0].marks;
+    cout << "\nMaximum marks: " << students[n-1].marks;
+    
+    cout << "\nTotal swaps made: " << quickSortSwaps << "\n";
 
     return 0;
 }
-// Quick sort with divide-and-conquer min/max finder | Time: O(n log n) avg, O(n²) worst
+// Quick sort (3-way partitioning) to sort students by marks with min/max | Time: O(n log n) avg, O(n²) worst | Space: O(log n)

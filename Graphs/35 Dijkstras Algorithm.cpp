@@ -1,73 +1,171 @@
 #include <iostream>
-#include <climits>
 using namespace std;
 
-int minDistance(int dist[], bool sptSet[], int V) {
-    int min = INT_MAX, min_index;
-    for (int v = 0; v < V; v++) {
-        if (sptSet[v] == false && dist[v] <= min) {
-            min = dist[v];
-            min_index = v;
-        }
+struct Node {
+    int vertex;
+    int weight;
+    Node* next;
+};
+
+Node* adjList[20];
+int visited[20], dist[20], parent[20];
+int v, e;
+
+void createAdjList() {
+    int i, a, b, w;
+    
+    cout << "\nEnter graph details:\n";
+    cout << "  Number of vertices: ";
+    cin >> v;
+    cout << "  Number of edges: ";
+    cin >> e;
+    
+    // Initialize adjacency list
+    for(i = 1; i <= v; i++) {
+        adjList[i] = NULL;
+        dist[i] = 32767;    // Initialize distances to INFINITY
+        visited[i] = 0;     // Mark all vertices as unvisited
+        parent[i] = 0;      // Initialize parent array
     }
-    return min_index;
+    
+    // Input edges
+    for(i = 1; i <= e; i++) {
+        cout << "\nEnter edge " << i << ":\n";
+        cout << "  Vertex A: ";
+        cin >> a;
+        cout << "  Vertex B: ";
+        cin >> b;
+        cout << "Weight of edge: ";
+        cin >> w;
+        
+        // Add edge from a to b
+        Node* newNode = new Node;
+        newNode->vertex = b;
+        newNode->weight = w;
+        newNode->next = adjList[a];
+        adjList[a] = newNode;
+        
+        // Add edge from b to a (undirected graph)
+        newNode = new Node;
+        newNode->vertex = a;
+        newNode->weight = w;
+        newNode->next = adjList[b];
+        adjList[b] = newNode;
+    }
 }
 
-void dijkstra(int **graph, int src, int V) {
-    int *dist = new int[V];
-    bool *sptSet = new bool[V];
-
-    for (int i = 0; i < V; i++) {
-        dist[i] = INT_MAX;
-        sptSet[i] = false;
+void displayAdjList() {
+    int i;
+    Node* temp;
+    
+    cout << "\nAdjacency List:\n";
+    for(i = 1; i <= v; i++) {
+        cout << "Vertex " << i << ": ";
+        temp = adjList[i];
+        while(temp != NULL) {
+            cout << temp->vertex << "(" << temp->weight << ") -> ";
+            temp = temp->next;
+        }
+        cout << "NULL\n";
     }
+}
 
-    dist[src] = 0;
-
-    for (int count = 0; count < V - 1; count++) {
-        int u = minDistance(dist, sptSet, V);
-        sptSet[u] = true;
-
-        for (int v = 0; v < V; v++) {
-            if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX && dist[u] + graph[u][v] < dist[v]) {
-                dist[v] = dist[u] + graph[u][v];
+void dijkstra() {
+    int source, target;
+    int current, i, mindist;
+    Node* temp;
+    
+    cout << "\nEnter source vertex: ";
+    cin >> source;
+    cout << "Enter target vertex: ";
+    cin >> target;
+    
+    // Initialize source distance to 0
+    dist[source] = 0;
+    current = source;
+    
+    while(current != target && current != 0) {
+        visited[current] = 1;
+        temp = adjList[current];
+        
+        // Update distances of all adjacent vertices
+        while(temp != NULL) {
+            if(!visited[temp->vertex]) {
+                if(dist[temp->vertex] > dist[current] + temp->weight) {
+                    dist[temp->vertex] = dist[current] + temp->weight;
+                    parent[temp->vertex] = current;
+                }
+            }
+            temp = temp->next;
+        }
+        
+        // Find unvisited vertex with minimum distance
+        mindist = 32767;
+        current = 0;
+        for(i = 1; i <= v; i++) {
+            if(!visited[i] && dist[i] < mindist) {
+                mindist = dist[i];
+                current = i;
             }
         }
     }
-
-    cout << "\nVertex \t Distance from Source\n";
-    for (int i = 0; i < V; i++) {
-        cout << i << " \t\t " << dist[i] << endl;
+    
+    if(current == target) {
+        cout << "\nShortest distance from " << source << " to " << target << " is: " << dist[target];
+        
+        // Print the path
+        cout << "\nPath: ";
+        int path[20], count = 0;
+        current = target;
+        
+        while(current != source) {
+            path[count++] = current;
+            current = parent[current];
+        }
+        path[count] = source;
+        
+        for(i = count; i >= 0; i--) {
+            cout << path[i];
+            if(i > 0) cout << " -> ";
+        }
+        cout << endl;
+    }
+    else {
+        cout << "\nNo path exists to target vertex!" << endl;
     }
 }
 
 int main() {
-    int V, e, u, v, w, src;
-    cout << "Enter number of vertices: ";
-    cin >> V;
+    int choice;
     
-    int **graph = new int*[V];
-    for (int i = 0; i < V; i++) {
-        graph[i] = new int[V];
-        for (int j = 0; j < V; j++) {
-            graph[i][j] = 0;
+    createAdjList();
+    
+    do {
+        cout << "\n=== Menu ===\n";
+        cout << "1. Display Adjacency List\n";
+        cout << "2. Find Shortest Path using Dijkstra's Algorithm\n";
+        cout << "3. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        
+        switch(choice) {
+            case 1:
+                displayAdjList();
+                break;
+                
+            case 2:
+                dijkstra();
+                break;
+                
+            case 3:
+                cout << "Exiting...\n";
+                break;
+                
+            default:
+                cout << "Invalid choice!\n";
         }
-    }
+    } while(choice != 3);
     
-    cout << "Enter number of edges: ";
-    cin >> e;
-    
-    cout << "Enter edges (u v weight):\n";
-    for (int i = 0; i < e; i++) {
-        cin >> u >> v >> w;
-        graph[u][v] = w;
-        graph[v][u] = w;
-    }
-    
-    cout << "Enter source vertex: ";
-    cin >> src;
-    
-    dijkstra(graph, src, V);
     return 0;
 }
-// Dijkstra's shortest path algorithm using adjacency matrix | Time: O(V²)
+// Dijkstra's algorithm for shortest path | Time: O(V²) | Space: O(V)

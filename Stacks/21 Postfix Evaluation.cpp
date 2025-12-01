@@ -1,66 +1,64 @@
 #include <iostream>
-#include <string>
+#include <cstring>
 using namespace std;
 
-struct StackNode {
+typedef struct SLL {
     int data;
-    StackNode* next;
-};
+    struct SLL *next;
+} *node;
 
-class Stack {
-    StackNode* top;
-public:
-    Stack() { 
-        top = NULL; 
-    }
-    
-    void push(int val) { 
-        StackNode* t = new StackNode{val, top}; 
-        top = t; 
-    }
-    
-    void pop() { 
-        if(top) { 
-            StackNode* t = top; 
-            top = top->next; 
-            delete t; 
-        } 
-    }
-    
-    int getTop() { 
-        return top ? top->data : 0; 
-    }
-    
-    bool empty() { 
-        return top == NULL; 
-    }
-};
+node top = NULL;
 
-int evaluatePostfix(string exp) {
-    Stack st;
+void push(int val) {
+    node newnode = (node)malloc(sizeof(node));
+    newnode->data = val;
+    newnode->next = top;
+    top = newnode;
+}
 
-    for (int i = 0; i < exp.length(); i++) {
-        if (isdigit(exp[i]))
-            st.push(exp[i] - '0');
-        else {
-            int val1 = st.getTop(); st.pop();
-            int val2 = st.getTop(); st.pop();
-            switch (exp[i]) {
-            case '+': st.push(val2 + val1); break;
-            case '-': st.push(val2 - val1); break;
-            case '*': st.push(val2 * val1); break;
-            case '/': st.push(val2 / val1); break;
+int pop() {
+    int val;
+    if (top != NULL) {
+        node temp = top;
+        val = temp->data;
+        top = top->next;
+        delete temp;
+    }
+
+    return val;
+}
+
+int evaluate_postfix(string expr) {
+    for (int i = 0; i < expr.length(); i++) {
+        char c = expr[i];
+        if (c == ' ') continue;
+        if (isdigit(c)) {
+            push(c - '0');
+        } else {
+            int op2 = pop();
+            int op1 = pop();
+            int result = 0;
+            switch(c){
+                case '+': result = op1 + op2; break;
+                case '-': result = op1 - op2; break;
+                case '*': result = op1 * op2; break;
+                case '/': result = op1 / op2; break;
+                default:
+                    cout << "Invalid operator: " << c << endl;
+                    return 0;
             }
+            push(result);
         }
     }
-    return st.getTop();
+    return pop();
 }
 
 int main() {
-    string exp;
-    cout << "Enter postfix expression: ";
-    cin >> exp;
-    cout << "postfix evaluation: " << evaluatePostfix(exp);
+    string expr;
+    cout << "Enter postfix expression (single digit operands, no spaces): ";
+    cin >> expr;
+    int result = evaluate_postfix(expr);
+    cout << "Result: " << result << endl;
     return 0;
 }
-// Postfix expression evaluation using stack | Time: O(n)
+// Postfix expression evaluation using stack | Time: O(n) | Space: O(n)

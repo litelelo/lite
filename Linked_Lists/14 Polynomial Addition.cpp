@@ -1,89 +1,176 @@
 #include <iostream>
 using namespace std;
 
-struct Node {
+typedef struct SLL{
     int coeff;
-    int exp;
-    Node* next;
-};
+    int pow;
+    struct SLL *next;
+} *node;
 
-class Polynomial {
-    Node* head;
-public:
-    Polynomial() { head = NULL; }
+node first1 = NULL;
+node first2 = NULL;
 
-    void addTerm(int c, int e) {
-        Node* newNode = new Node{c, e, NULL};
-        if (!head || head->exp < e) {
-            newNode->next = head;
-            head = newNode;
-        } else {
-            Node* temp = head;
-            while (temp->next && temp->next->exp >= e) {
-                temp = temp->next;
+node accept(){
+    node a = new SLL;
+    cout << "\nEnter power of variable: ";
+    cin >> a->pow;
+    cout << "Enter coefficient: ";
+    cin >> a->coeff;
+    a->next = NULL;
+
+    return a;
+}
+
+void newpoly(node &f){
+    int c;
+    cout << "\n\nEnter polynomial values: \n";
+
+    do{
+        node newnode = accept();
+
+        node temp = f;
+        bool found = false;
+        
+        while(temp != NULL){
+            if(temp->pow == newnode->pow){
+                temp->coeff += newnode->coeff;
+                delete newnode;  
+                found = true;
+                cout << "Term with same power found. Coefficients combined.";
+                break;
             }
-            if (temp->exp == e) {
-                temp->coeff += c;
-                delete newNode;
-            } else {
-                newNode->next = temp->next;
-                temp->next = newNode;
-            }
-        }
-    }
-
-    void display() {
-        Node* temp = head;
-        while (temp) {
-            cout << temp->coeff << "x^" << temp->exp;
-            if (temp->next) cout << " + ";
             temp = temp->next;
         }
-        cout << endl;
-    }
-
-    static Polynomial add(Polynomial& p1, Polynomial& p2) {
-        Polynomial res;
-        Node* t1 = p1.head;
-        Node* t2 = p2.head;
-        while (t1) {
-            res.addTerm(t1->coeff, t1->exp);
-            t1 = t1->next;
+        
+        if(!found){
+            if(f == NULL){
+                f = newnode;
+            }
+            else {
+                node a = f;
+                while (a->next != NULL){
+                    a = a->next;
+                }
+                a->next = newnode;
+            }
         }
-        while (t2) {
-            res.addTerm(t2->coeff, t2->exp);
-            t2 = t2->next;
-        }
-        return res;
-    }
-};
 
-int main() {
-    Polynomial p1, p2;
-    int n, coeff, exp;
-    
-    cout << "Enter number of terms in Polynomial 1: ";
-    cin >> n;
-    for (int i = 0; i < n; i++) {
-        cout << "Enter coefficient and exponent: ";
-        cin >> coeff >> exp;
-        p1.addTerm(coeff, exp);
-    }
-    
-    cout << "\nEnter number of terms in Polynomial 2: ";
-    cin >> n;
-    for (int i = 0; i < n; i++) {
-        cout << "Enter coefficient and exponent: ";
-        cin >> coeff >> exp;
-        p2.addTerm(coeff, exp);
-    }
-
-    cout << "\nP1: "; p1.display();
-    cout << "P2: "; p2.display();
-
-    Polynomial p3 = Polynomial::add(p1, p2);
-    cout << "Sum: "; p3.display();
-
-    return 0;
+        cout << "\nDo you continue adding to the polynomial? (0 for no, 1 for yes): ";
+        cin >> c;
+    } while(c != 0);
 }
-// Polynomial addition using singly linked list sorted by exponent | Time: O(n+m)
+
+void display(node &f){
+    if(f == NULL){
+        cout << "\nNo bits entered yet.";
+        return;
+    }
+
+    node temp = f;
+    while(temp->next != NULL){
+        cout << temp->coeff << "x^" << temp->pow << " + ";
+        temp = temp->next;
+    }
+
+    cout << temp->coeff << "x^" << temp->pow;
+}
+
+void addpolynomials(){
+    node result = NULL;
+    node p1 = first1;
+    node p2 = first2;
+    
+    while(p1 != NULL && p2 != NULL){
+        node newnode = new SLL;
+        
+        if(p1->pow == p2->pow){
+            newnode->coeff = p1->coeff + p2->coeff;
+            newnode->pow = p1->pow;
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        else if(p1->pow > p2->pow){
+            newnode->coeff = p1->coeff;
+            newnode->pow = p1->pow;
+            p1 = p1->next;
+        }
+        else{
+            newnode->coeff = p2->coeff;
+            newnode->pow = p2->pow;
+            p2 = p2->next;
+        }
+        
+        newnode->next = NULL;
+        
+        if(result == NULL){
+            result = newnode;
+        }
+        else{
+            node temp = result;
+            while(temp->next != NULL){
+                temp = temp->next;
+            }
+            temp->next = newnode;
+        }
+    }
+    
+    //if there's still elements left in p1
+    while(p1 != NULL){
+        node newnode = new SLL;
+        newnode->coeff = p1->coeff;
+        newnode->pow = p1->pow;
+        newnode->next = NULL;
+        
+        if(result == NULL){
+            result = newnode;
+        }
+        else{
+            node temp = result;
+            while(temp->next != NULL){
+                temp = temp->next;
+            }
+            temp->next = newnode;
+        }
+        p1 = p1->next;
+    }
+    
+    while(p2 != NULL){
+        node newnode = new SLL;
+        newnode->coeff = p2->coeff;
+        newnode->pow = p2->pow;
+        newnode->next = NULL;
+        
+        if(result == NULL){
+            result = newnode;
+        }
+        else{
+            node temp = result;
+            while(temp->next != NULL){
+                temp = temp->next;
+            }
+            temp->next = newnode;
+        }
+        p2 = p2->next;
+    }
+    
+    cout << "\nSum of polynomials: ";
+    display(result); 
+}
+
+int main(){
+    
+    cout << "\nFor first polynomial: ";
+    newpoly(first1);
+
+    cout << "\n\nFor second polynomial: ";
+    newpoly(first2);
+            
+    cout << "\nFirst polynomial: ";
+    display(first1);
+
+    cout << "\nSecond polynomial: ";
+    display(first2);
+
+    addpolynomials();
+}
+// Singly linked list for polynomial addition by combining like terms | Time: O(n+m) where n, m are term counts in two polynomials

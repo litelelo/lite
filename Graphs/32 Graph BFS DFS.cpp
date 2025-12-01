@@ -1,156 +1,136 @@
 #include <iostream>
 using namespace std;
 
-struct QNode {
-    int data;
-    QNode* next;
-};
+int adj[20][20], visited[20];
+int v, e;
 
-class Queue {
-    QNode *front, *rear;
-public:
-    Queue() { 
-        front = rear = NULL; 
-    }
-    
-    void push(int val) { 
-        QNode* t = new QNode{val, NULL}; 
-        if(rear) 
-            rear->next = t; 
-        else 
-            front = t; 
-        rear = t; 
-    }
-    
-    void pop() { 
-        if(front) { 
-            QNode* t = front; 
-            front = front->next; 
-            if(!front) 
-                rear = NULL; 
-            delete t; 
-        } 
-    }
-    
-    int getFront() { 
-        return front ? front->data : -1; 
-    }
-    
-    bool empty() { 
-        return front == NULL; 
-    }
-};
-
-struct StackNode {
-    int data;
-    StackNode* next;
-};
-
-class Stack {
-    StackNode* top;
-public:
-    Stack() { 
-        top = NULL; 
-    }
-    
-    void push(int val) { 
-        StackNode* t = new StackNode{val, top}; 
-        top = t; 
-    }
-    
-    void pop() { 
-        if(top) { 
-            StackNode* t = top; 
-            top = top->next; 
-            delete t; 
-        } 
-    }
-    
-    int getTop() { 
-        return top ? top->data : -1; 
-    }
-    
-    bool empty() { 
-        return top == NULL; 
-    }
-};
-
-class Graph {
-    int adj[10][10];
-    int n;
-public:
-    Graph(int nodes) {
-        n = nodes;
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                adj[i][j] = 0;
-    }
-
-    void addEdge(int u, int v) {
-        adj[u][v] = 1;
-        adj[v][u] = 1;
-    }
-
-    void BFS(int start) {
-        bool visited[10] = {false};
-        Queue q;
-        visited[start] = true;
-        q.push(start);
-
-        cout << "BFS: ";
-        while (!q.empty()) {
-            int u = q.getFront();
-            q.pop();
-            cout << u << " ";
-            for (int v = 0; v < n; v++) {
-                if (adj[u][v] && !visited[v]) {
-                    visited[v] = true;
-                    q.push(v);
-                }
-            }
-        }
-        cout << endl;
-    }
-
-    void DFS(int start) {
-        bool visited[10] = {false};
-        Stack s;
-        s.push(start);
-
-        cout << "DFS: ";
-        while (!s.empty()) {
-            int u = s.getTop();
-            s.pop();
-            if (!visited[u]) {
-                visited[u] = true;
-                cout << u << " ";
-                for (int v = n - 1; v >= 0; v--) {
-                    if (adj[u][v] && !visited[v]) {
-                        s.push(v);
-                    }
-                }
-            }
-        }
-        cout << endl;
-    }
-};
-
-int main() {
-    int n, e, u, v, start;
-    cout << "Enter number of nodes: ";
-    cin >> n;
-    Graph g(n);
-    cout << "Enter number of edges: ";
+void creategraph(){
+    int i, j, a, b;
+    cout << "\nEnter graph details:\n";
+    cout << "Number of vertices: ";
+    cin >> v;
+    cout << "Number of edges: ";
     cin >> e;
-    cout << "Enter edges (u v):\n";
-    for(int i = 0; i < e; i++) {
-        cin >> u >> v;
-        g.addEdge(u, v);
+    
+    for(i = 1; i <= v; i++){
+        for(j = 1; j <= v; j++)
+            adj[i][j] = 0;
     }
-    cout << "Enter start node: ";
-    cin >> start;
-    g.BFS(start);
-    g.DFS(start);
+    
+    for(i = 1; i <= e; i++){
+        cout << "\nEnter edge " << i << ":\n";
+        cout << "  Vertex A: ";
+        cin >> a;
+        cout << "  Vertex B: ";
+        cin >> b;
+        adj[a][b] = 1;
+        adj[b][a] = 1;
+    }
+}
+
+void displayMatrix(){
+    int i, j;
+    cout << "\nAdjacency Matrix:\n";
+    cout << "   ";
+    for(i = 1; i <= v; i++)
+        cout << i << " ";
+    cout << endl;
+    
+    for(i = 1; i <= v; i++){
+        cout << i << "  ";
+        for(j = 1; j <= v; j++)
+            cout << adj[i][j] << " ";
+        cout << endl;
+    }
+}
+
+void BFS(int start){
+    int queue[20], front = 0, rear = 0;
+    int current, i;
+    
+    for(i = 1; i <= v; i++)
+        visited[i] = 0;
+    
+    cout << "\nBFS Traversal: ";
+    queue[rear++] = start;
+    visited[start] = 1;
+    
+    while(front < rear){
+        current = queue[front++];
+        cout << current << " ";
+        
+        for(i = 1; i <= v; i++){
+            if(adj[current][i] == 1 && visited[i] == 0){
+                queue[rear++] = i;
+                visited[i] = 1;
+            }
+        }
+    }
+    cout << endl;
+}
+
+void DFS(int vertex){
+    int i;
+    cout << vertex << " ";
+    visited[vertex] = 1;
+    
+    for(i = 1; i <= v; i++){
+        if(adj[vertex][i] == 1 && visited[i] == 0){
+            DFS(i);
+        }
+    }
+}
+
+void DFSTraversal(int start){
+    int i;
+    for(i = 1; i <= v; i++)
+        visited[i] = 0;
+    
+    cout << "\nDFS Traversal: ";
+    DFS(start);
+    cout << endl;
+}
+
+int main(){
+    int choice, start;
+    
+    creategraph();
+    
+    do{
+        cout << "\n=== Graph Traversal Menu ===\n";
+        cout << "1. Display Adjacency Matrix\n";
+        cout << "2. BFS Traversal\n";
+        cout << "3. DFS Traversal\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        
+        switch(choice){
+            case 1:
+                displayMatrix();
+                break;
+                
+            case 2:
+                cout << "Enter starting vertex: ";
+                cin >> start;
+                BFS(start);
+                break;
+                
+            case 3:
+                cout << "Enter starting vertex: ";
+                cin >> start;
+                DFSTraversal(start);
+                break;
+                
+            case 4:
+                cout << "Exiting...\n";
+                break;
+                
+            default:
+                cout << "Invalid choice!\n";
+        }
+    }while(choice != 4);
+    
     return 0;
 }
-// Graph BFS and DFS traversal using adjacency matrix | Time: O(V²)
+// Graph BFS & DFS traversal using adjacency matrix | Time: O(V²) | Space: O(V)

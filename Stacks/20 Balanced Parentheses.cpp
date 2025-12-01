@@ -1,80 +1,82 @@
 #include <iostream>
-#include <string>
 using namespace std;
 
-struct StackNode {
-    char data;
-    StackNode* next;
-};
+typedef struct sll {
+    char bracket;
+    struct sll *next;
+} *node;
 
-class Stack {
-    StackNode* top;
-public:
-    Stack() { 
-        top = NULL; 
-    }
-    
-    void push(char c) { 
-        StackNode* t = new StackNode{c, top}; 
-        top = t; 
-    }
-    
-    void pop() { 
-        if(top) { 
-            StackNode* t = top; 
-            top = top->next; 
-            delete t; 
-        } 
-    }
-    
-    char getTop() { 
-        return top ? top->data : '\0'; 
-    }
-    
-    bool empty() { 
-        return top == NULL; 
-    }
-};
+node top = NULL;
 
-bool isBalanced(string expr) {
-    Stack s;
-    char x;
+void push(char c) {
+    node newnode = (node)malloc(sizeof(node));;
+    newnode->bracket = c;
+    newnode->next = top;
+    top = newnode;
+}
 
-    for (int i = 0; i < expr.length(); i++) {
-        if (expr[i] == '(' || expr[i] == '[' || expr[i] == '{') {
-            s.push(expr[i]);
-            continue;
-        }
+void pop() {
+    if (top != NULL) {
+        node temp = top;
+        top = top->next;
+        delete temp;
+    }
+}
 
-        if (s.empty()) return false;
+char peek() {
+    if (top != NULL)
+        return top->bracket;
+    return '\0';
+}
 
-        switch (expr[i]) {
-        case ')':
-            x = s.getTop();
-            s.pop();
-            if (x == '{' || x == '[') return false;
-            break;
-        case '}':
-            x = s.getTop();
-            s.pop();
-            if (x == '(' || x == '[') return false;
-            break;
-        case ']':
-            x = s.getTop();
-            s.pop();
-            if (x == '(' || x == '{') return false;
-            break;
+bool isempty() {
+    return top == NULL;
+}
+
+bool isbalanced(string s) {
+    for (int i = 0; i < s.length(); i++) {
+        char c = s[i];
+        if (c == '(' || c == '{' || c == '[') {
+            push(c);
+        } else if (c == ')' || c == '}' || c == ']') {
+            if (isempty())
+                return false;
+            char t = peek();
+            if ((c == ')' && t == '(') ||
+                (c == '}' && t == '{') ||
+                (c == ']' && t == '[')) {
+                pop();
+            } else {
+                return false;
+            }
         }
     }
-    return (s.empty());
+    return isempty();
+}
+
+bool onlybrackets(string s) {
+    for (int i = 0; i < s.length(); i++) {
+        char c = s[i];
+        if (c != '(' && c != ')' && c != '{' && c != '}' && c != '[' && c != ']')
+            return false;
+    }
+    return true;
 }
 
 int main() {
-    string expr;
-    cout << "Enter expression with parentheses: ";
-    cin >> expr;
-    if (isBalanced(expr)) cout << "Balanced";
-    else cout << "Not Balanced";
+    string s;
+    do {
+        cout << "Enter a string of brackets: ";
+        cin >> s;
+        if (!onlybrackets(s)) {
+            cout << "Invalid input! Please enter only brackets () {} []\n";
+        }
+    } while (!onlybrackets(s));
+    
+    if (isbalanced(s))
+        cout << "Balanced" << endl;
+    else
+        cout << "Not Balanced" << endl;
     return 0;
 }
-// Balanced parentheses checker using stack | Time: O(n)
+// Stack to check balanced parentheses ((), {}, []) | Time: O(n) | Space: O(n)

@@ -1,88 +1,120 @@
 #include <iostream>
 using namespace std;
 
-class HashTable {
-    int *table;
-    int size;
-public:
-    HashTable(int s) {
-        size = s;
-        table = new int[size];
-        for (int i = 0; i < size; i++) {
-            table[i] = -1;
+const int TABLE_SIZE = 10;
+
+int hashTable[TABLE_SIZE];
+bool isOccupied[TABLE_SIZE];
+
+void initialize() {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        hashTable[i] = -1;
+        isOccupied[i] = false;
+    }
+}
+
+int hashFunction(int key) {
+    return key % TABLE_SIZE;
+}
+
+void insert(int key) {
+    int index = hashFunction(key);
+    int startIndex = index;
+
+    while (isOccupied[index]) {
+        index = (index + 1) % TABLE_SIZE;
+        if (index == startIndex) {
+            cout << "Hash table is full. Cannot insert key " << key << endl;
+            return;
         }
     }
 
-    void insert(int key) {
-        int index = key % size;
-        int i = 0;
-        while (table[(index + i) % size] != -1) {
-            i++;
-            if (i == size) {
-                cout << "Table Full\n";
-                return;
-            }
+    hashTable[index] = key;
+    isOccupied[index] = true;
+    cout << "Inserted key " << key << " at index " << index << endl;
+}
+
+int search (int key) {
+    int index = hashFunction(key);
+    int startIndex = index;
+
+    while (isOccupied[index]) {
+        if (hashTable[index] == key) {
+            return index;
         }
-        table[(index + i) % size] = key;
-        cout << "Inserted " << key << " at index " << (index + i) % size << endl;
+        index = (index + 1) % TABLE_SIZE;
+        if (index == startIndex) break;
     }
 
-    void search(int key) {
-        int index = key % size;
-        int i = 0;
-        while (table[(index + i) % size] != -1) {
-            if (table[(index + i) % size] == key) {
-                cout << "Found " << key << " at index " << (index + i) % size << endl;
-                return;
-            }
-            i++;
-            if (i == size) {
-                break;
-            }
-        }
-        cout << "Key " << key << " not found\n";
-    }
+    return -1; 
+}
 
-    void display() {
-        cout << "\nHash Table:\n";
-        for (int i = 0; i < size; i++) {
-            if (table[i] != -1) {
-                cout << i << " --> " << table[i] << endl;
-            } else {
-                cout << i << " --> " << endl;
-            }
-        }
+void removeKey(int key) {
+    int index = search(key);
+    if (index != -1) {
+        hashTable[index] = -1;
+        isOccupied[index] = false;
+        cout << "Key " << key << " deleted from index " << index << endl;
+    } else {
+        cout << "Key " << key << " not found.\n";
     }
-};
+}
+
+void display() {
+    cout << "\nHash Table:\n";
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (isOccupied[i])
+            cout << "Index " << i << ": " << hashTable[i] << endl;
+        else
+            cout << "Index " << i << ": Empty\n";
+    }
+}
 
 int main() {
-    int size, choice, key;
-    
-    cout << "Enter hash table size: ";
-    cin >> size;
-    HashTable ht(size);
-    
-    while (true) {
-        cout << "\n1. Insert\n2. Search\n3. Display\n4. Exit\n";
-        cout << "Enter choice: ";
+    initialize();
+    int choice, key;
+    do {
+        cout << "\nHash Table Menu:\n";
+        cout << "1. Insert\n";
+        cout << "2. Search\n";
+        cout << "3. Delete\n";
+        cout << "4. Display\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
         cin >> choice;
-        
-        if (choice == 1) {
+        switch (choice) {
+        case 1:
             cout << "Enter key to insert: ";
             cin >> key;
-            ht.insert(key);
-        } else if (choice == 2) {
+            insert(key);
+            break;
+        case 2:
             cout << "Enter key to search: ";
             cin >> key;
-            ht.search(key);
-        } else if (choice == 3) {
-            ht.display();
-        } else if (choice == 4) {
+            {
+                int index = search(key);
+                if (index != -1)
+                    cout << "Key " << key << " found at index " << index << endl;
+                else
+                    cout << "Key " << key << " not found." << endl;
+            }
             break;
-        } else {
-            cout << "Invalid choice!\n";
+        case 3:
+            cout << "Enter key to delete: ";
+            cin >> key;
+            removeKey(key);
+            break;
+        case 4:
+            display();
+            break;
+        case 0:
+            cout << "Exiting..." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Try again.\n";
         }
-    }
+    } while (choice != 0);
+
     return 0;
 }
-// Hash table with linear probing for collision resolution | Time: O(1) avg, O(n) worst
+// Hash table with linear probing collision resolution | Operations: insert, search, display | Time: O(1) avg, O(n) worst | Space: O(n)
