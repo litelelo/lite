@@ -9,3 +9,12 @@ Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Hashin
 ```powershell
 Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Hashing/38%20Student%20Records.cpp"
 ```
+
+## 3faculty_record_hash_table.cpp
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Hashing/faculty_record_hash_table.cpp"
+```
+##  smart_college_placement.cpp
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Hashing/smart_college_placement.cpp"
+```
