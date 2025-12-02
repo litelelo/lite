@@ -19,3 +19,12 @@ Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Arrays
 ```powershell
 Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Arrays_Strings/4%20Fast%20Transpose.cpp"
 ```
+## 5 Roll nos Bubble sort
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Arrays_Strings/5_Roll_nos_Bubble_sort.cpp"
+```
+
+## 6_Quick_sort_Student_Marks.cpp
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Arrays_Strings/56_Quick_sort_Student_Marks.cpp"
+```
