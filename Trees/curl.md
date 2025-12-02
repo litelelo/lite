@@ -24,3 +24,15 @@ Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Trees/
 ```powershell
 Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Trees/31%20Binary%20Tree%20Recursive.cpp"
 ```
+
+## 31 bst create insert delete level.CPP
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Trees/bst_C_I_D_L.CPP"
+```
+
+## 31 bst_insert_del_find_show.cpp
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Trees/bst_insert_del_find_show.cpp"
+```
+
+
