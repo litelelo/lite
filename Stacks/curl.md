@@ -24,3 +24,18 @@ Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Stacks
 ```powershell
 Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Stacks/21%20Postfix%20Evaluation.cpp"
 ```
+
+## Infinix_to_postfinix_new.cpp
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Stacks/Infinix_to_postfinix_new.cpp"
+```
+
+## call_center.cpp
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Stacks/call_center.cpp"
+```
+
+## medical_patients.cpp
+```powershell
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/litelelo/lite/a/Stacks/medical_patients.cpp"
+```
